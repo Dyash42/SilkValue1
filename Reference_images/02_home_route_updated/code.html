@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Silk Value Collector - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom styles for the strict bottom nav requirements */
+        .bottom-nav-fixed {
+            height: 60px;
+            background-color: #FFFFFF;
+            border-top: 1px solid #000000;
+        }
+        .nav-active-icon {
+            color: #000000;
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nav-active-text {
+            color: #000000;
+            font-weight: 700;
+        }
+        .nav-inactive {
+            color: #AAAAAA;
+            font-weight: 400;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<!-- Top Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-4 py-3">
+<div class="flex items-center gap-2">
+<span class="text-lg font-bold tracking-tight text-primary dark:text-white">Silk Value</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex flex-col items-end">
+<span class="text-xs font-semibold text-slate-900 dark:text-slate-100">John Doe</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-wider">Syncing</span>
+</div>
+<div class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+</header>
+<!-- GPS Alert Banner -->
+<div class="bg-primary px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3 text-white">
+<span class="material-symbols-outlined text-xl">location_off</span>
+<div>
+<p class="text-sm font-bold">GPS is turned off</p>
+<p class="text-xs opacity-80">Enable tracking for accurate route updates.</p>
+</div>
+</div>
+<button class="rounded border border-white px-3 py-1 text-xs font-bold text-white uppercase tracking-tight">
+                Turn On
+            </button>
+</div>
+<main class="flex-1 px-4 py-6 mb-[60px]">
+<!-- Header Info -->
+<div class="mb-6">
+<h1 class="text-2xl font-bold leading-tight">Monday, Oct 24</h1>
+<p class="text-lg font-medium text-slate-600 dark:text-slate-400">Route A12 • Ramanagara District</p>
+</div>
+<!-- Start Route Button -->
+<button class="mb-8 flex h-[52px] w-full items-center justify-center gap-2 rounded-lg bg-primary text-white font-bold text-lg">
+<span class="material-symbols-outlined">play_arrow</span>
+                Start Route
+            </button>
+<!-- Progress Card -->
+<div class="mb-8 flex flex-col gap-4">
+<div class="flex items-end justify-between">
+<div>
+<p class="text-sm font-medium text-slate-500">Stops Completed</p>
+<p class="text-2xl font-bold">6 <span class="text-base font-normal text-slate-400">of 10</span></p>
+</div>
+<div class="text-right">
+<p class="text-sm font-medium text-slate-500">Total Weight</p>
+<p class="text-2xl font-bold">45.5 <span class="text-base font-normal text-slate-400">kg</span></p>
+</div>
+</div>
+<div class="h-2.5 w-full rounded-full bg-slate-200 dark:bg-slate-800">
+<div class="h-2.5 rounded-full bg-primary" style="width: 60%"></div>
+</div>
+</div>
+<!-- Stops List -->
+<div class="flex flex-col gap-4">
+<h2 class="text-sm font-bold uppercase tracking-widest text-slate-400">Today's Stops</h2>
+<!-- Stop Card 1 (Done) -->
+<div class="flex flex-col gap-3 rounded-lg border border-primary p-4 bg-white dark:bg-slate-900">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-white text-sm font-bold">1</div>
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white leading-tight">Venkatesh Murthy</h3>
+<p class="text-xs text-slate-500">Sidlaghatta Village</p>
+</div>
+</div>
+<span class="rounded bg-slate-100 dark:bg-slate-800 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Done</span>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-2">
+<span class="text-xs text-slate-500">Expected Qty: <span class="font-bold text-slate-900 dark:text-white">12.5 kg</span></span>
+<span class="material-symbols-outlined text-green-600">check_circle</span>
+</div>
+</div>
+<!-- Stop Card 2 (Pending - Next) -->
+<div class="flex flex-col gap-3 rounded-lg border border-primary p-4 bg-white dark:bg-slate-900 ring-2 ring-primary ring-offset-2 ring-offset-background-light">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-white text-sm font-bold">2</div>
+<div>
+<h3 class="font-bold text-slate-900 dark:text-white leading-tight">Nagaratna Silk Reels</h3>
+<p class="text-xs text-slate-500">Kempapura Crossing</p>
+</div>
+</div>
+<span class="rounded bg-primary px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Pending</span>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-2">
+<span class="text-xs text-slate-500">Expected Qty: <span class="font-bold text-slate-900 dark:text-white">8.2 kg</span></span>
+<button class="text-xs font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">directions</span>
+                            Navigate
+                        </button>
+</div>
+</div>
+<!-- Stop Card 3 (Skipped) -->
+<div class="flex flex-col gap-3 rounded-lg border border-slate-200 dark:border-slate-800 p-4 bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-sm font-bold">3</div>
+<div>
+<h3 class="font-bold text-slate-500 leading-tight line-through">Basavaraj H.</h3>
+<p class="text-xs text-slate-400">Hosakote Main Rd</p>
+</div>
+</div>
+<span class="rounded bg-slate-200 dark:bg-slate-700 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-600">Skipped</span>
+</div>
+<div class="flex items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-2">
+<span class="text-xs text-slate-400 italic">No response at door</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">block</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex bottom-nav-fixed">
+<a class="flex flex-1 flex-col items-center justify-center" href="#">
+<span class="material-symbols-outlined !text-[24px] nav-active-icon">home</span>
+<p class="text-[10px] nav-active-text uppercase tracking-wider">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center" href="#">
+<span class="material-symbols-outlined !text-[24px] nav-inactive">map</span>
+<p class="text-[10px] nav-inactive uppercase tracking-wider">Map</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center" href="#">
+<span class="material-symbols-outlined !text-[24px] nav-inactive">package_2</span>
+<p class="text-[10px] nav-inactive uppercase tracking-wider">Collections</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center" href="#">
+<span class="material-symbols-outlined !text-[24px] nav-inactive">settings</span>
+<p class="text-[10px] nav-inactive uppercase tracking-wider">Settings</p>
+</a>
+</nav>
+</div>
+</body></html>

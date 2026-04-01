@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23000000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-900 font-display">
+<!-- Top Bar -->
+<header class="sticky top-0 z-50 bg-white border-b border-primary/10 px-4 py-4">
+<h1 class="text-xl font-bold text-center tracking-tight">Past Collections</h1>
+</header>
+<main class="pb-36">
+<!-- Period Filter -->
+<div class="p-4">
+<label class="block mb-2 text-sm font-medium uppercase tracking-wider text-slate-500">Period</label>
+<select class="w-full h-12 px-4 border border-primary rounded-lg focus:ring-0 focus:outline-none text-base font-medium">
+<option selected="">This Month</option>
+<option>Last Month</option>
+<option>Last 3 Months</option>
+<option>Custom Range</option>
+</select>
+</div>
+<!-- Summary Bar -->
+<div class="flex border-y border-primary divide-x divide-primary bg-white">
+<div class="flex-1 p-4 flex flex-col items-center justify-center">
+<span class="text-xs font-medium text-slate-500 uppercase">Total Weight</span>
+<span class="text-lg font-bold">1,250 kg</span>
+</div>
+<div class="flex-1 p-4 flex flex-col items-center justify-center">
+<span class="text-xs font-medium text-slate-500 uppercase">Total Earnings</span>
+<span class="text-lg font-bold">₹ 15,000</span>
+</div>
+</div>
+<!-- List of Trip Cards -->
+<div class="p-4 space-y-4">
+<!-- Synced Trip -->
+<div class="border border-primary p-4 rounded-lg bg-white">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="text-sm font-bold">Oct 24, 2023</p>
+<p class="text-xs text-slate-500">8:30 AM - 4:00 PM</p>
+</div>
+<span class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded-full uppercase tracking-tighter">Synced</span>
+</div>
+<div class="flex justify-between text-sm">
+<span>12 Stops</span>
+<span class="font-semibold">142 kg</span>
+</div>
+</div>
+<!-- Pending Trip -->
+<div class="border border-primary p-4 rounded-lg bg-white">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="text-sm font-bold">Oct 23, 2023</p>
+<p class="text-xs text-slate-500">9:15 AM - 5:30 PM</p>
+</div>
+<span class="px-3 py-1 border border-primary text-primary text-[10px] font-bold rounded-full uppercase tracking-tighter">Pending</span>
+</div>
+<div class="flex justify-between text-sm">
+<span>15 Stops</span>
+<span class="font-semibold">188 kg</span>
+</div>
+</div>
+<!-- Failed Trip -->
+<div class="border border-primary p-4 rounded-lg bg-white">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="text-sm font-bold">Oct 22, 2023</p>
+<p class="text-xs text-slate-500">8:00 AM - 2:00 PM</p>
+</div>
+<div class="flex items-center gap-1">
+<span class="px-3 py-1 border border-primary bg-white text-primary text-[10px] font-bold rounded-full uppercase tracking-tighter flex items-center gap-1">
+                            Failed <span class="material-symbols-outlined text-[12px]">close</span>
+</span>
+</div>
+</div>
+<div class="flex justify-between text-sm mb-4">
+<span>10 Stops</span>
+<span class="font-semibold">110 kg</span>
+</div>
+<button class="w-full py-2 bg-primary text-white text-xs font-bold rounded uppercase tracking-widest">Retry Sync</button>
+</div>
+<!-- Another Synced Trip -->
+<div class="border border-primary p-4 rounded-lg bg-white">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="text-sm font-bold">Oct 20, 2023</p>
+<p class="text-xs text-slate-500">10:00 AM - 6:00 PM</p>
+</div>
+<span class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded-full uppercase tracking-tighter">Synced</span>
+</div>
+<div class="flex justify-between text-sm">
+<span>18 Stops</span>
+<span class="font-semibold">215 kg</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Footer Bar -->
+<div class="fixed bottom-[60px] left-0 right-0 bg-white border-t border-primary p-4 z-40">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">Total this month:</span>
+<span class="text-xl font-bold">₹ 15,000</span>
+</div>
+</div>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-black px-4 h-[60px] flex items-center justify-around z-50">
+<a class="flex flex-col items-center justify-center gap-0.5" href="#" style="color: #AAAAAA;">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px] font-normal">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-0.5" href="#" style="color: #AAAAAA;">
+<span class="material-symbols-outlined text-[24px]">map</span>
+<span class="text-[10px] font-normal">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-0.5" href="#" style="color: #000000;">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-[10px] font-bold">Collections</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-0.5" href="#" style="color: #AAAAAA;">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-[10px] font-normal">Settings</span>
+</a>
+</nav>
+</body></html>

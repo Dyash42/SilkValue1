@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Silk Value Reeler",
+    "slug": "silk-value-reeler",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "silkvalue-reeler",
+    "platforms": ["android"],
+    "android": {
+      "package": "com.silkvalue.reeler"
+    }
+  }
+}

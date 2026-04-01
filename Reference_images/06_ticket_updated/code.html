@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Roboto+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#ffffff",
+                        "background-dark": "#191919",
+                        "nav-grey": "#AAAAAA"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["Roboto Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .dashed-bottom {
+            background-image: linear-gradient(to right, #000 50%, rgba(255, 255, 255, 0) 0%);
+            background-position: bottom;
+            background-size: 12px 1px;
+            background-repeat: repeat-x;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-primary">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto bg-white border-x border-slate-100 pb-[60px]">
+<header class="flex items-center justify-center p-4 border-b border-slate-100">
+<h1 class="text-lg font-bold tracking-tight">Collection Ticket</h1>
+</header>
+<main class="flex-1 p-4 flex flex-col gap-6">
+<div class="border border-primary rounded-lg overflow-hidden flex flex-col">
+<div class="p-6 flex flex-col gap-4 dashed-bottom pb-8">
+<div class="flex flex-col items-center gap-1">
+<h2 class="text-xl font-bold tracking-widest uppercase">SILK VALUE</h2>
+<p class="font-mono text-xs text-slate-500">TICKET ID: #SKV-2023-001</p>
+</div>
+<div class="flex flex-col gap-3 mt-4">
+<div class="flex justify-between items-start border-b border-slate-100 pb-2">
+<span class="text-sm text-slate-500 uppercase font-medium">Date &amp; Time</span>
+<span class="text-sm font-semibold">24 Oct 2023 | 10:30 AM</span>
+</div>
+<div class="flex justify-between items-start border-b border-slate-100 pb-2">
+<span class="text-sm text-slate-500 uppercase font-medium">Reeler</span>
+<div class="text-right">
+<p class="text-sm font-bold">Rajesh Kumar</p>
+<p class="text-xs text-slate-500">ID: RK-552</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 py-2">
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-slate-500 uppercase">Gross</span>
+<span class="text-sm font-bold">12.5 kg</span>
+</div>
+<div class="flex flex-col items-center border-x border-slate-100">
+<span class="text-[10px] text-slate-500 uppercase">Tare</span>
+<span class="text-sm font-bold">0.5 kg</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-slate-500 uppercase">Net</span>
+<span class="text-sm font-bold">12.0 kg</span>
+</div>
+</div>
+<div class="flex justify-center py-2">
+<span class="px-3 py-1 border border-primary text-xs font-bold rounded-full uppercase">Grade A+</span>
+</div>
+</div>
+<div class="mt-6 flex flex-col items-center">
+<span class="text-xs text-slate-500 uppercase font-medium mb-1">Payable Amount</span>
+<h3 class="text-4xl font-bold tracking-tight">₹ 42,500.00</h3>
+</div>
+</div>
+<div class="bg-slate-50/50 p-4 flex flex-col items-center">
+<p class="text-[10px] text-slate-400 uppercase tracking-widest">Digital Receipt Verified</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<button class="flex items-center justify-center gap-2 w-full bg-primary text-white h-12 rounded-lg font-bold text-sm">
+<span class="material-symbols-outlined text-xl">share</span>
+                    Share via WhatsApp
+                </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 border border-primary text-primary h-12 rounded-lg font-bold text-sm">
+<span class="material-symbols-outlined text-xl">sms</span>
+                        SMS
+                    </button>
+<button class="flex items-center justify-center gap-2 border border-primary text-primary h-12 rounded-lg font-bold text-sm">
+<span class="material-symbols-outlined text-xl">print</span>
+                        Print
+                    </button>
+</div>
+</div>
+<div class="mt-auto pt-8">
+<button class="w-full bg-primary text-white h-[52px] rounded-lg font-bold text-base uppercase tracking-wide">
+                    Next Reeler
+                </button>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 mx-auto max-w-md flex h-[60px] items-center bg-white border-t border-black z-50">
+<a class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[#AAAAAA]" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<p class="text-[10px] font-normal">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[#AAAAAA]" href="#">
+<span class="material-symbols-outlined text-[24px]">map</span>
+<p class="text-[10px] font-normal">Map</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[#AAAAAA]" href="#">
+<span class="material-symbols-outlined text-[24px]">receipt_long</span>
+<p class="text-[10px] font-normal">Collections</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[#AAAAAA]" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<p class="text-[10px] font-normal">Settings</p>
+</a>
+</nav>
+</div>
+</body></html>

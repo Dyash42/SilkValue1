@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Silk Value Collector",
+    "slug": "silk-value-collector",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "silkvalue-collector",
+    "splash": {
+      "backgroundColor": "#ffffff"
+    },
+    "platforms": ["android"],
+    "jsEngine": "hermes",
+    "android": {
+      "package": "com.silkvalue.collector"
+    },
+    "plugins": [
+      "@morrowdigital/watermelondb-expo-plugin",
+      "./withWatermelonFix.js",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.8.10",
+            "packagingOptions": {
+              "pickFirst": ["**/libc++_shared.so"]
+            }
+          }
+        }
+      ]
+    ]
+  }
+}

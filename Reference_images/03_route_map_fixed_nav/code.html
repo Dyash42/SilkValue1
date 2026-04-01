@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Route Map View - Silk Value Collector</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .map-container { height: 60vh; position: relative; overflow: hidden; }
+        .dashed-line {
+            stroke-dasharray: 8;
+            stroke: #000000;
+            stroke-width: 2;
+            fill: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-white font-display text-slate-900">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- Top Bar -->
+<header class="flex items-center bg-white px-4 py-4 border-b border-slate-100 z-10">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="ml-2 text-lg font-bold leading-tight tracking-tight text-primary">Route Map View</h1>
+</header>
+<!-- Main Map Area (Top 60%) -->
+<main class="relative w-full overflow-hidden bg-slate-50 flex-1">
+<div class="absolute inset-0 grayscale opacity-80" data-alt="Greyscale city street map background" data-location="Mysuru, India" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWexGcJmvcbIrvrILoqiTkH8eV8HRu9x5mjuQ6UdJr3SwvFGxSJ1EvGvpTvEPPqWvoPWZIWO0XGuMs-q9n5HQJayDpETz9mFTYvY1xP1pEKmn6YNIhCobC6IJFNWdTHCPf4YNYI8w2eHD3Zzk1mEfTiAowvkGekpSHvgFcrbkZmvxoybLMJlKjZazDKZRabMgf9GPmI3kcxWKwHo-Pe9-LWQA1GnwZDkie2uX5Ei-9ncwD53-EmlRtyQ0vhMajxv4s8uPHOfxcxJY'); background-size: cover; background-position: center;">
+</div>
+<!-- Route Visualization Overlay -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<!-- Dashed Route Line -->
+<path class="dashed-line" d="M 50 450 Q 150 350 250 400 T 350 250"></path>
+</svg>
+<!-- Map Markers -->
+<!-- Done Marker -->
+<div class="absolute top-[40%] left-[20%] -translate-x-1/2 -translate-y-1/2">
+<div class="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+</div>
+<!-- Current GPS Dot (Only Color) -->
+<div class="absolute top-[55%] left-[45%] -translate-x-1/2 -translate-y-1/2">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-6 h-6 bg-blue-500/30 rounded-full"></div>
+<div class="w-3 h-3 bg-blue-600 rounded-full border-2 border-white"></div>
+</div>
+</div>
+<!-- Pending Marker -->
+<div class="absolute top-[35%] left-[70%] -translate-x-1/2 -translate-y-1/2">
+<div class="bg-white text-primary border-2 border-primary w-8 h-8 rounded-full flex items-center justify-center font-bold">
+                    3
+                </div>
+</div>
+<!-- Skipped Marker -->
+<div class="absolute top-[20%] left-[80%] -translate-x-1/2 -translate-y-1/2">
+<div class="bg-white text-primary border-2 border-primary w-8 h-8 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-sm font-bold">close</span>
+</div>
+</div>
+</main>
+<!-- Draggable Bottom Sheet (Visual representation) -->
+<div class="relative bg-white rounded-t-xl border-t border-slate-200 h-[40%] flex flex-col z-20">
+<!-- Handle -->
+<div class="flex flex-col items-center py-3">
+<div class="h-1 w-12 rounded-full bg-slate-300"></div>
+<h4 class="mt-2 text-slate-500 text-xs font-bold uppercase tracking-widest">Route Stops</h4>
+</div>
+<!-- Scrollable Stop Cards -->
+<div class="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
+<!-- Stop Card 01 - Done -->
+<div class="flex items-center gap-4 p-3 border border-slate-100 rounded-lg">
+<div class="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center font-bold text-primary">1</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h5 class="font-bold text-sm">Arun Kumar</h5>
+<span class="text-[10px] font-bold uppercase px-2 py-0.5 bg-slate-100 rounded text-slate-600">Collected</span>
+</div>
+<p class="text-xs text-slate-500">Kengeri Village • 4.5kg</p>
+</div>
+</div>
+<!-- Stop Card 02 - Active -->
+<div class="flex items-center gap-4 p-3 border-2 border-primary rounded-lg bg-slate-50">
+<div class="flex-shrink-0 w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-white">2</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h5 class="font-bold text-sm">Suresh Raina</h5>
+<span class="text-[10px] font-bold uppercase px-2 py-0.5 bg-primary text-white rounded">Next Up</span>
+</div>
+<p class="text-xs text-slate-500">Madanapalli • 12.0kg</p>
+<div class="flex gap-2 mt-2">
+<button class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">near_me</span> Navigate
+                            </button>
+<button class="border border-primary text-primary text-xs font-bold px-4 py-2 rounded-lg">Skip</button>
+</div>
+</div>
+</div>
+<!-- Stop Card 03 - Pending -->
+<div class="flex items-center gap-4 p-3 border border-slate-100 rounded-lg">
+<div class="flex-shrink-0 w-10 h-10 border-2 border-slate-300 rounded-full flex items-center justify-center font-bold text-slate-400">3</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h5 class="font-bold text-sm">Lokesh Rahul</h5>
+<span class="text-[10px] font-bold uppercase px-2 py-0.5 bg-slate-50 rounded text-slate-400">Pending</span>
+</div>
+<p class="text-xs text-slate-500">Hoskote Village • 8.2kg</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="flex border-t border-slate-100 bg-white px-4 pb-6 pt-2 shrink-0">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">map</span>
+<p class="text-[10px] font-bold leading-normal">Map</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-[10px] font-medium leading-normal">Collections</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+</body></html>

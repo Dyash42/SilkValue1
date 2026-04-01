@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#ffffff",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col items-center w-full max-w-[480px] mx-auto px-6 py-12 min-h-screen">
+<!-- Logo Section (Approx 28% from top) -->
+<div class="mt-[176px] mb-2 flex flex-col items-center">
+<div class="w-16 h-16 bg-primary flex items-center justify-center rounded-lg mb-4">
+<span class="material-symbols-outlined text-white text-4xl">eco</span>
+</div>
+<h1 class="text-2xl font-bold tracking-tight text-primary">Silk Value</h1>
+<p class="text-slate-500 text-sm font-medium mt-1">Collector App</p>
+</div>
+<!-- Input Section -->
+<div class="w-full mt-12 space-y-6">
+<div class="flex flex-col gap-2">
+<label class="text-primary text-sm font-bold uppercase tracking-wider">Mobile Number</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 text-primary font-medium border-r border-primary/20 pr-3">+91</span>
+<input class="w-full pl-16 pr-4 py-4 bg-transparent border border-primary rounded-none focus:ring-0 focus:outline-none text-lg font-medium" placeholder="Enter 10 digit number" type="number"/>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-4 font-bold rounded-none hover:bg-black/90 transition-colors uppercase tracking-widest text-sm">
+                Get OTP
+            </button>
+</div>
+<!-- OTP Section -->
+<div class="w-full mt-10">
+<p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4 text-center">Enter OTP</p>
+<div class="flex justify-between gap-2 mb-6">
+<input class="w-12 h-14 border border-primary text-center text-xl font-bold bg-transparent rounded-none focus:ring-0" maxlength="1" type="text"/>
+<input class="w-12 h-14 border border-primary text-center text-xl font-bold bg-transparent rounded-none focus:ring-0" maxlength="1" type="text"/>
+<input class="w-12 h-14 border border-primary text-center text-xl font-bold bg-transparent rounded-none focus:ring-0" maxlength="1" type="text"/>
+<input class="w-12 h-14 border border-primary text-center text-xl font-bold bg-transparent rounded-none focus:ring-0" maxlength="1" type="text"/>
+<input class="w-12 h-14 border border-primary text-center text-xl font-bold bg-transparent rounded-none focus:ring-0" maxlength="1" type="text"/>
+<input class="w-12 h-14 border border-primary text-center text-xl font-bold bg-transparent rounded-none focus:ring-0" maxlength="1" type="text"/>
+</div>
+<button class="w-full bg-primary text-white py-4 font-bold rounded-none hover:bg-black/90 transition-colors uppercase tracking-widest text-sm">
+                Verify &amp; Login
+            </button>
+</div>
+<!-- Spacer -->
+<div class="flex-grow"></div>
+<!-- Info Card -->
+<div class="w-full bg-[#F5F5F5] border border-primary p-4 mb-6">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-xl">info</span>
+<p class="text-xs leading-relaxed text-slate-700">
+                    If this is your first login, please ensure you have received your collector ID from the regional office. Your account will be activated after the first verification.
+                </p>
+</div>
+</div>
+<!-- Footer -->
+<div class="w-full text-center pb-4">
+<p class="text-[10px] text-slate-400 uppercase tracking-widest font-medium">
+                Login persists until explicit logout or 30 days of inactivity
+            </p>
+</div>
+</div>
+</body></html>
