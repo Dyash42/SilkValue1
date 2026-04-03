@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-white text-black antialiased pb-20">
+<!-- Top Header -->
+<header class="sticky top-0 z-50 bg-white border-b-2 border-black">
+<div class="px-4 py-4 flex flex-col items-center relative min-h-[80px] justify-center">
+<!-- Line 1: Chevron Left and Title -->
+<div class="w-full flex items-center justify-center relative">
+<button class="absolute left-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-black text-3xl font-bold">chevron_left</span>
+</button>
+<h1 class="text-base font-bold uppercase tracking-widest text-black">Notifications</h1>
+</div>
+<!-- Line 2: Mark all read -->
+<button class="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-600 mt-1">
+            Mark all read
+        </button>
+</div>
+</header>
+<main class="max-w-2xl mx-auto w-full">
+<!-- Section: Today -->
+<div class="px-4 py-3 bg-black">
+<h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-white">Today</h2>
+</div>
+<div class="flex flex-col">
+<!-- Notification Card 1 -->
+<div class="flex items-start gap-4 p-5 border-b border-black">
+<div class="flex-shrink-0 size-10 flex items-center justify-center border-2 border-black">
+<span class="material-symbols-outlined text-black">account_balance_wallet</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-bold uppercase tracking-tight">Payment Processed</p>
+<span class="text-[10px] font-bold ml-2 whitespace-nowrap">2h ago</span>
+</div>
+<p class="text-xs leading-relaxed">Your payment for the recent silk pupae collection has been successfully sent to your bank.</p>
+</div>
+</div>
+<!-- Notification Card 2 -->
+<div class="flex items-start gap-4 p-5 border-b border-black">
+<div class="flex-shrink-0 size-10 flex items-center justify-center border-2 border-black">
+<span class="material-symbols-outlined text-black">inventory_2</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-bold uppercase tracking-tight">Collection Confirmed</p>
+<span class="text-[10px] font-bold ml-2 whitespace-nowrap">5h ago</span>
+</div>
+<p class="text-xs leading-relaxed">Your recent field weight of 45 kg has been accepted at the factory gate.</p>
+</div>
+</div>
+</div>
+<!-- Section: Yesterday -->
+<div class="px-4 py-3 bg-black">
+<h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-white">Yesterday</h2>
+</div>
+<div class="flex flex-col">
+<!-- Notification Card 3 -->
+<div class="flex items-start gap-4 p-5 border-b border-black">
+<div class="flex-shrink-0 size-10 flex items-center justify-center border-2 border-black">
+<span class="material-symbols-outlined text-black">event</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-bold uppercase tracking-tight">Schedule Change</p>
+<span class="text-[10px] font-bold ml-2 whitespace-nowrap">Yesterday</span>
+</div>
+<p class="text-xs leading-relaxed">The field agent's visit has been shifted to 10:00 AM tomorrow.</p>
+</div>
+</div>
+<!-- Notification Card 4 -->
+<div class="flex items-start gap-4 p-5 border-b border-black">
+<div class="flex-shrink-0 size-10 flex items-center justify-center border-2 border-black">
+<span class="material-symbols-outlined text-black">verified_user</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-bold uppercase tracking-tight">KYC Approved</p>
+<span class="text-[10px] font-bold ml-2 whitespace-nowrap">Yesterday</span>
+</div>
+<p class="text-xs leading-relaxed">Your identity verification is complete. You are ready to sell.</p>
+</div>
+</div>
+</div>
+<div class="py-16 flex flex-col items-center border-t border-black mt-4">
+<span class="material-symbols-outlined text-black text-3xl mb-3">notifications_off</span>
+<p class="text-black text-[10px] font-bold uppercase tracking-[0.2em]">No more notifications</p>
+</div>
+</main>
+<!-- Bottom Navigation Bar (4 Icons only) -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-black">
+<div class="max-w-2xl mx-auto flex items-center justify-around h-16 px-2">
+<button class="flex flex-col items-center justify-center gap-1 flex-1">
+<span class="material-symbols-outlined text-black text-2xl">home</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 flex-1">
+<span class="material-symbols-outlined text-black text-2xl">inventory_2</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter">Collections</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 flex-1">
+<span class="material-symbols-outlined text-black text-2xl">payments</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter">Payments</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 flex-1">
+<span class="material-symbols-outlined text-black text-2xl">person</span>
+<span class="text-[9px] font-bold uppercase tracking-tighter">Profile</span>
+</button>
+</div>
+</nav>
+</body></html>

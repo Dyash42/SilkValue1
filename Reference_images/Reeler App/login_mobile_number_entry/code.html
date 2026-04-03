@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-screen w-full flex-col max-w-[480px] mx-auto bg-background-light dark:bg-background-dark overflow-x-hidden">
+<!-- Header -->
+<header class="flex items-center p-4">
+<button aria-label="Go back" class="flex size-12 items-center justify-center rounded-full hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-slate-100 text-[28px]">arrow_back</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex flex-1 flex-col px-6 pt-12">
+<!-- Branding/Welcome -->
+<div class="flex flex-col items-center mb-12">
+<!-- Placeholder for Logo/Icon -->
+<div class="mb-8 p-4 border-2 border-primary/10 rounded-xl">
+<span class="material-symbols-outlined text-primary dark:text-slate-100 text-[48px]">agriculture</span>
+</div>
+<h1 class="text-primary dark:text-slate-100 tracking-tight text-[40px] font-bold leading-tight text-center mb-3 font-display uppercase tracking-widest">
+                    Welcome
+                </h1>
+<p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal text-center max-w-[280px]">
+                    Enter your mobile number to continue
+                </p>
+</div>
+<!-- Input Section -->
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-primary dark:text-slate-300 text-xs font-bold leading-normal tracking-[0.1em] uppercase">
+                        Mobile Number
+                    </label>
+<div class="relative group">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-primary dark:text-slate-100 focus:outline-0 focus:ring-2 focus:ring-primary/20 border-2 border-primary/10 bg-white dark:bg-slate-800 focus:border-primary h-16 placeholder:text-slate-400 p-[20px] text-lg font-medium tracking-wider" placeholder="+91 (000) 000-0000" type="tel"/>
+</div>
+</div>
+</div>
+<!-- Spacer -->
+<div class="flex-1"></div>
+<!-- Footer Action Button -->
+<div class="py-10">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-16 px-5 bg-primary dark:bg-slate-100 text-white dark:text-primary text-lg font-bold leading-normal tracking-[0.05em] shadow-lg active:scale-[0.98] transition-transform">
+<span class="truncate uppercase tracking-widest">Send OTP</span>
+</button>
+<p class="mt-6 text-center text-xs text-slate-400 dark:text-slate-500">
+                    By continuing, you agree to our Terms and Conditions
+                </p>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,102 @@
+# Reeler App — UI Scaffolding Walkthrough
+
+## Summary
+
+Built the complete UI for the Silk Value **Reeler App** — 11 screens, 5 new shared components, full navigation, typed mock data — all following the **Industrial Brutalist** design system. Zero backend code.
+
+---
+
+## Files Created
+
+### Shared UI Components (`packages/ui/src/components/`)
+
+| File | Purpose |
+|------|---------|
+| [ReelerBottomNavBar.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/packages/ui/src/components/ReelerBottomNavBar.tsx) | 4-tab bottom nav (Home, Collections, Payments, Profile) |
+| [QRCodeDisplay.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/packages/ui/src/components/QRCodeDisplay.tsx) | QR placeholder with brutalist border styling |
+| [PaymentStatusBadge.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/packages/ui/src/components/PaymentStatusBadge.tsx) | Status pill: paid/pending/failed/processing |
+| [CollectionHistoryCard.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/packages/ui/src/components/CollectionHistoryCard.tsx) | Tappable card with date, grade, weight, status |
+| [KycStatusBanner.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/packages/ui/src/components/KycStatusBanner.tsx) | Full-width banner with approved/pending/rejected states |
+
+### Modified: [index.ts](file:///c:/1D/BKR/SilK/Silk%20Value/packages/ui/src/index.ts) — Added all new exports
+
+---
+
+### Reeler App Foundation (`apps/reeler-app/`)
+
+| File | Purpose |
+|------|---------|
+| [package.json](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/package.json) | Updated deps (React Navigation, @silk-value/ui) |
+| [App.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/App.tsx) | NavigationContainer → RootNavigator |
+| [src/types/index.ts](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/types/index.ts) | All TypeScript interfaces |
+| [src/mock/reelerMockData.ts](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/mock/reelerMockData.ts) | Single source of truth for all mock data |
+
+---
+
+### Navigation (`apps/reeler-app/src/navigation/`)
+
+| File | Purpose |
+|------|---------|
+| [types.ts](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/navigation/types.ts) | AuthStack, AppTab, AppStack param lists |
+| [AuthNavigator.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/navigation/AuthNavigator.tsx) | Language → Login → OTP → KYC → Status |
+| [TabNavigator.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/navigation/TabNavigator.tsx) | Bottom tabs: Home, Collections, Payments, Profile |
+| [AppNavigator.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/navigation/AppNavigator.tsx) | Tabs + CollectionDetail + Notifications |
+| [RootNavigator.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/navigation/RootNavigator.tsx) | Auth ↔ App toggle (mock state) |
+
+---
+
+### Screens (`apps/reeler-app/src/screens/`)
+
+| # | Screen | File |
+|---|--------|------|
+| 1 | Language Selection | [LanguageSelectionScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/LanguageSelectionScreen.tsx) |
+| 2 | Login | [LoginScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/LoginScreen.tsx) |
+| 3 | OTP Verification | [OtpVerificationScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/OtpVerificationScreen.tsx) |
+| 4 | KYC Submission | [KycSubmissionScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/KycSubmissionScreen.tsx) |
+| 5 | Account Status | [AccountStatusScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/AccountStatusScreen.tsx) |
+| 6 | Home Dashboard | [HomeDashboardScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/HomeDashboardScreen.tsx) |
+| 7 | Collection History | [CollectionHistoryScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/CollectionHistoryScreen.tsx) |
+| 8 | Collection Detail | [CollectionDetailScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/CollectionDetailScreen.tsx) |
+| 9 | Payments | [PaymentsScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/PaymentsScreen.tsx) |
+| 10 | Notifications | [NotificationsScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/NotificationsScreen.tsx) |
+| 11 | Profile & Settings | [ProfileSettingsScreen.tsx](file:///c:/1D/BKR/SilK/Silk%20Value/apps/reeler-app/src/screens/ProfileSettingsScreen.tsx) |
+
+---
+
+## Navigation Flow
+
+```mermaid
+graph TD
+    A["RootNavigator"] --> B{"isAuthenticated?"}
+    B -- false --> C["AuthNavigator"]
+    B -- true --> D["AppNavigator"]
+    
+    C --> C1["Language Selection"]
+    C1 --> C2["Login"]
+    C2 --> C3["OTP Verification"]
+    C3 --> C4["KYC Submission"]
+    C4 --> C5["Account Status"]
+    
+    D --> D1["TabNavigator"]
+    D --> D2["Collection Detail"]
+    D --> D3["Notifications"]
+    
+    D1 --> T1["Home Dashboard"]
+    D1 --> T2["Collection History"]
+    D1 --> T3["Payments"]
+    D1 --> T4["Profile & Settings"]
+```
+
+## Design Decisions
+
+1. **Separate ReelerBottomNavBar** — Created a dedicated nav bar instead of making the existing collector-app BottomNavBar generic, avoiding breaking changes to the collector app.
+2. **RootNavigator toggle** — `isAuthenticated` defaults to `false` (auth flow). Set to `true` in code to review dashboard screens directly.
+3. **Mock data centralized** — Every screen imports from a single `reelerMockData.ts` file. No screen has inline placeholder data.
+4. **Every screen has TODO markers** — Each screen file has a header comment marking it for future WatermelonDB integration.
+
+## Next Steps
+
+1. Run `pnpm install` to resolve new dependencies
+2. Run `npx expo start` to verify on device/emulator
+3. Visual review against reference images
+4. Begin **Factory Gate App** (Phase D) after confirmation

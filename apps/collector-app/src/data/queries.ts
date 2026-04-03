@@ -43,11 +43,13 @@ export function observeCollectorProfile(
  * The date column in WatermelonDB stores ISO date strings, matching the
  * Supabase `date` column format used in the sync service.
  */
+import { getLocalDateString } from "../services/sync";
+
 export function observeTodayRoute(
   database: Database,
   userId: string,
 ): Observable<Route[]> {
-  const today = new Date().toISOString().split("T")[0]!;
+  const today = getLocalDateString();
   return database
     .get<Route>("routes")
     .query(Q.where("collector_id", userId), Q.where("date", today))

@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Factory Gate",
+    "slug": "factory-gate-app",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "scheme": "silkvalue-gate",
+    "platforms": ["ios", "android"]
+  }
+}

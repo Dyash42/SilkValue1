@@ -16,7 +16,7 @@ export {
   StopStatus,
   KycStatus,
   NotificationType,
-} from './enums';
+} from './enums.js';
 
 // ── Database Row Interfaces ──────────────────────────────────────────────────
 export type {
@@ -32,4 +32,4 @@ export type {
   Payment,
   Notification,
   Database,
-} from './database';
+} from './database.js';

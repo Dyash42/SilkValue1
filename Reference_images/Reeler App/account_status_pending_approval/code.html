@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<title>Account Status</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex h-screen w-full flex-col overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-primary/5">
+<button aria-label="Go back" class="flex size-10 items-center justify-center rounded-full hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">arrow_back</span>
+</button>
+<h1 class="ml-2 text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Account Status</h1>
+</header>
+<!-- Main Content Area -->
+<main class="flex flex-1 flex-col items-center justify-center px-6 py-10">
+<div class="flex flex-col items-center max-w-md w-full gap-8">
+<!-- Visual Centerpiece -->
+<div class="relative flex items-center justify-center w-48 h-48 rounded-full bg-primary/5 dark:bg-primary/20">
+<div class="flex items-center justify-center w-32 h-32 rounded-full bg-primary text-background-light">
+<span class="material-symbols-outlined !text-6xl" style="font-variation-settings: 'wght' 300;">verified_user</span>
+</div>
+<!-- Decorative subtle Ring -->
+<div class="absolute inset-0 border-2 border-dashed border-primary/10 rounded-full"></div>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col items-center gap-4 text-center">
+<h2 class="text-slate-900 dark:text-slate-100 text-3xl font-bold leading-tight tracking-tight">
+                        Account Pending Approval
+                    </h2>
+<p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed max-w-[320px]">
+                        Your identity documents are currently being reviewed by an admin. We will notify you once your account is active.
+                    </p>
+</div>
+<!-- Status Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 dark:bg-primary/30 rounded-full">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs font-semibold uppercase tracking-widest text-primary dark:text-slate-100">Verification In Progress</span>
+</div>
+</div>
+</main>
+<!-- Bottom Action -->
+<footer class="p-6 bg-background-light dark:bg-background-dark border-t border-primary/5">
+<div class="max-w-md mx-auto">
+<button class="w-full flex items-center justify-center rounded h-14 px-8 bg-primary text-background-light text-sm font-bold leading-normal tracking-widest uppercase hover:opacity-90 transition-opacity">
+                    CONTACT SUPPORT
+                </button>
+<p class="mt-4 text-center text-xs text-slate-400 uppercase tracking-tighter">
+                    Estimated review time: 24-48 hours
+                </p>
+</div>
+</footer>
+</div>
+</body></html>

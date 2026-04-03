@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "secondary-text": "#666666",
+                        "divider": "#EEEEEE",
+                        "background-light": "#FFFFFF",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px", 
+                        "lg": "0px", 
+                        "xl": "0px", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom checkbox styling for monochrome look */
+        input[type="checkbox"]:checked {
+            background-color: black;
+            border-color: black;
+        }
+    </style>
+</head>
+<body class="bg-white text-black min-h-screen flex flex-col font-display">
+<!-- Top Header -->
+<header class="sticky top-0 z-50 bg-white border-b border-black">
+<div class="flex items-center px-4 py-4 max-w-md mx-auto relative">
+<button class="flex items-center justify-center p-1 absolute left-4">
+<span class="material-symbols-outlined text-black text-3xl font-bold">chevron_left</span>
+</button>
+<h2 class="text-lg font-bold uppercase tracking-tight w-full text-center">Profile &amp; Settings</h2>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto max-w-md mx-auto w-full px-4 pt-6 pb-32">
+<!-- Section 1: Identity & Cluster -->
+<section class="mb-10">
+<h3 class="text-sm font-bold uppercase tracking-widest text-secondary-text mb-4">Identity &amp; Cluster</h3>
+<div class="border-2 border-black divide-y-2 divide-black">
+<div class="p-4 flex flex-col gap-1">
+<span class="text-[10px] uppercase font-bold text-secondary-text">Name</span>
+<span class="text-base font-bold">John Doe</span>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] uppercase font-bold text-secondary-text">Reeler ID</span>
+<span class="text-base font-bold">ID-88291</span>
+</div>
+<button class="border-2 border-black px-3 py-2 text-[10px] font-bold uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">qr_code_2</span>
+                    QR Code
+                </button>
+</div>
+<div class="grid grid-cols-2 divide-x-2 divide-black">
+<div class="p-4 flex flex-col gap-1">
+<span class="text-[10px] uppercase font-bold text-secondary-text">Date of Birth</span>
+<span class="text-base font-bold">12/05/1988</span>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<span class="text-[10px] uppercase font-bold text-secondary-text">Gender</span>
+<span class="text-base font-bold">Male</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<span class="text-[10px] uppercase font-bold text-secondary-text">Address</span>
+<span class="text-base font-bold leading-tight">Village Malur, Kolar District</span>
+</div>
+<div class="p-4 flex flex-col gap-1 bg-black text-white">
+<span class="text-[10px] uppercase font-bold opacity-70">Cluster Assignment</span>
+<span class="text-base font-bold">North Hub</span>
+</div>
+</div>
+</section>
+<!-- Section 2: Bank Details -->
+<section class="mb-10">
+<h3 class="text-sm font-bold uppercase tracking-widest text-secondary-text mb-4">Bank Details</h3>
+<div class="border-2 border-black p-4 mb-4 flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] uppercase font-bold text-secondary-text">Account Number</span>
+<span class="text-base font-bold">**** 4432 <span class="text-[10px] border border-black px-1 ml-1">VERIFIED</span></span>
+</div>
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<button class="w-full bg-black text-white py-4 px-4 font-bold uppercase tracking-widest text-sm border-2 border-black hover:bg-white hover:text-black transition-colors">
+            Edit Bank Details
+        </button>
+</section>
+<!-- Section 3: Preferences -->
+<section class="mb-10">
+<h3 class="text-sm font-bold uppercase tracking-widest text-secondary-text mb-4">Preferences</h3>
+<div class="border-2 border-black divide-y-2 divide-black">
+<!-- Language Selection -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">translate</span>
+<span class="text-sm font-bold uppercase">Language</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold">English</span>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+<!-- Notifications -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-black">sms</span>
+<span class="text-sm font-bold uppercase">SMS Alerts</span>
+</div>
+<input checked="" class="w-6 h-6 border-2 border-black text-black focus:ring-0" type="checkbox"/>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-black">notifications_active</span>
+<span class="text-sm font-bold uppercase">App Push Alerts</span>
+</div>
+<input checked="" class="w-6 h-6 border-2 border-black text-black focus:ring-0" type="checkbox"/>
+</div>
+</div>
+</section>
+<!-- Section 4: Support & Account -->
+<section class="mb-10">
+<h3 class="text-sm font-bold uppercase tracking-widest text-secondary-text mb-4">Support &amp; Account</h3>
+<div class="border-2 border-black divide-y-2 divide-black mb-6">
+<a class="p-4 flex items-center justify-between hover:bg-black hover:text-white transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">chat</span>
+<span class="text-sm font-bold uppercase">Contact Support <span class="text-[10px] ml-2 font-normal">(WhatsApp)</span></span>
+</div>
+<span class="material-symbols-outlined">open_in_new</span>
+</a>
+</div>
+<button class="w-full bg-white text-black py-4 px-4 font-bold uppercase tracking-widest text-sm border-2 border-black hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">logout</span>
+            Logout
+        </button>
+</section>
+<!-- Footer Info -->
+<footer class="text-center py-6 flex flex-col gap-1">
+<p class="text-[10px] font-bold text-secondary-text uppercase">App Version v1.0.2</p>
+<p class="text-[10px] font-bold text-secondary-text uppercase">Last Synced: Today, 9:00 AM</p>
+</footer>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-black pb-safe z-50">
+<div class="max-w-md mx-auto flex px-2 py-3">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-black opacity-40" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[9px] font-bold uppercase tracking-tighter">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-black opacity-40" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<p class="text-[9px] font-bold uppercase tracking-tighter">Collections</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-black opacity-40" href="#">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-[9px] font-bold uppercase tracking-tighter">Payments</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-black" href="#">
+<span class="material-symbols-outlined active-icon">person</span>
+<p class="text-[9px] font-bold uppercase tracking-tighter">Profile</p>
+</a>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<title>OTP Verification</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-white dark:bg-background-dark">
+<!-- Top Header -->
+<div class="flex items-center p-4 pt-6">
+<button aria-label="Go back" class="flex items-center justify-center size-12 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-3xl font-bold">arrow_back</span>
+</button>
+</div>
+<!-- Main Content Area -->
+<div class="flex flex-col px-6 pt-8">
+<h1 class="text-slate-900 dark:text-slate-100 text-4xl font-bold leading-tight tracking-tight">
+                Verify Mobile
+            </h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg font-normal mt-4 leading-relaxed">
+                Enter the 4-digit code sent to <span class="font-semibold text-slate-900 dark:text-slate-100">+91 98765 XXXXX</span>
+</p>
+<!-- OTP Input Section -->
+<div class="flex justify-between gap-4 mt-12 mb-10">
+<input autocomplete="one-time-code" class="w-16 h-16 text-center text-2xl font-bold border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-primary focus:ring-0 bg-transparent dark:text-white" inputmode="numeric" maxlength="1" type="text"/>
+<input class="w-16 h-16 text-center text-2xl font-bold border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-primary focus:ring-0 bg-transparent dark:text-white" inputmode="numeric" maxlength="1" type="text"/>
+<input class="w-16 h-16 text-center text-2xl font-bold border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-primary focus:ring-0 bg-transparent dark:text-white" inputmode="numeric" maxlength="1" type="text"/>
+<input class="w-16 h-16 text-center text-2xl font-bold border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:border-primary focus:ring-0 bg-transparent dark:text-white" inputmode="numeric" maxlength="1" type="text"/>
+</div>
+<!-- Action Button -->
+<div class="mt-4">
+<button class="w-full bg-primary text-white py-5 rounded-lg text-lg font-bold tracking-widest uppercase hover:opacity-90 active:scale-[0.98] transition-all">
+                    VERIFY &amp; LOGIN
+                </button>
+</div>
+<!-- Footer Timer -->
+<div class="mt-8 flex flex-col items-center">
+<p class="text-slate-500 dark:text-slate-500 text-base">
+                    Resend code in <span class="font-bold text-slate-900 dark:text-slate-200">0:59</span>
+</p>
+</div>
+</div>
+<!-- Decorative Element for Rural Context (Subtle) -->
+<div class="mt-auto p-6 opacity-10 grayscale pointer-events-none">
+<div class="w-full h-32 rounded-xl border-t-2 border-slate-300 dark:border-slate-600 flex items-end justify-center">
+<span class="material-symbols-outlined text-8xl">agriculture</span>
+</div>
+</div>
+</div>
+</body></html>

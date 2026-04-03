@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Factory Logistics - History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#dadada",
+              "on-tertiary-fixed-variant": "#e2e2e2",
+              "error": "#ba1a1a",
+              "on-tertiary-fixed": "#ffffff",
+              "on-secondary-container": "#1b1c1c",
+              "tertiary": "#3a3c3c",
+              "surface-container": "#eeeeee",
+              "on-error-container": "#410002",
+              "primary-container": "#3b3b3b",
+              "on-secondary-fixed": "#1b1c1c",
+              "background": "#f9f9f9",
+              "surface-container-high": "#e8e8e8",
+              "on-background": "#1b1b1b",
+              "tertiary-fixed-dim": "#454747",
+              "surface-tint": "#5e5e5e",
+              "on-tertiary-container": "#ffffff",
+              "on-primary-fixed": "#ffffff",
+              "primary": "#000000",
+              "inverse-on-surface": "#f1f1f1",
+              "on-surface": "#1b1b1b",
+              "on-primary-fixed-variant": "#e2e2e2",
+              "on-primary": "#e2e2e2",
+              "surface-bright": "#f9f9f9",
+              "secondary": "#5e5e5e",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed": "#5e5e5e",
+              "inverse-primary": "#c6c6c6",
+              "inverse-surface": "#303030",
+              "secondary-fixed": "#c7c6c6",
+              "on-primary-container": "#ffffff",
+              "surface-variant": "#e2e2e2",
+              "outline-variant": "#c6c6c6",
+              "secondary-fixed-dim": "#ababab",
+              "surface-container-low": "#f3f3f3",
+              "on-surface-variant": "#474747",
+              "surface-container-highest": "#e2e2e2",
+              "on-secondary-fixed-variant": "#3b3b3c",
+              "on-secondary": "#ffffff",
+              "surface": "#ffffff",
+              "on-tertiary": "#e2e2e2",
+              "secondary-container": "#d5d4d4",
+              "error-container": "#ffdad6",
+              "primary-fixed-dim": "#474747",
+              "tertiary-container": "#737575",
+              "tertiary-fixed": "#5d5f5f",
+              "outline": "#000000",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #000000; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between px-4 h-16 w-full border-b border-black sticky top-0 bg-white z-40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-black" data-icon="factory">factory</span>
+<h1 class="font-bold text-2xl tracking-tighter uppercase text-black">FACTORY LOGISTICS</h1>
+</div>
+<div class="flex items-center">
+<span class="font-bold text-black uppercase text-sm">History</span>
+</div>
+</header>
+<main class="flex-1 px-4 py-6 mb-20">
+<!-- Search Bar -->
+<section class="mb-6">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full h-12 pl-10 pr-4 bg-white border border-black focus:border-2 focus:ring-0 text-black placeholder:text-on-surface-variant rounded-sm font-label text-sm" placeholder="Search by Vehicle ID, collector, cluster" type="text"/>
+</div>
+</section>
+<!-- Filter Pills -->
+<section class="mb-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-widest rounded-sm whitespace-nowrap active:scale-95 transition-transform">
+                Today
+            </button>
+<button class="px-4 py-2 bg-white text-black border border-black text-xs font-bold uppercase tracking-widest rounded-sm whitespace-nowrap active:scale-95 transition-transform">
+                This Week
+            </button>
+<button class="px-4 py-2 bg-white text-black border border-black text-xs font-bold uppercase tracking-widest rounded-sm whitespace-nowrap active:scale-95 transition-transform flex items-center gap-2">
+                Custom Date
+                <span class="material-symbols-outlined text-[16px]" data-icon="calendar_today">calendar_today</span>
+</button>
+</section>
+<!-- Results Label -->
+<div class="mb-4">
+<span class="text-on-surface-variant text-[0.75rem] font-bold uppercase tracking-wider">Showing 24 entries</span>
+</div>
+<!-- Vehicle Entry Cards -->
+<div class="space-y-4">
+<!-- Entry 1: Accepted -->
+<article class="bg-white border border-black rounded-lg p-4 flex flex-col gap-3 active:opacity-80 transition-opacity cursor-pointer">
+<div class="flex justify-between items-start">
+<h2 class="font-bold text-lg text-black">VH-9021-TX</h2>
+<span class="text-on-surface-variant text-xs font-medium">14:20 • OCT 24</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">James Wilson</span>
+<span class="text-on-surface-variant text-sm font-bold uppercase tracking-tighter">North Cluster</span>
+</div>
+<div class="flex justify-between items-end pt-2 border-t border-outline-variant">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Net Weight</span>
+<span class="font-bold text-xl text-black">12,450 KG</span>
+</div>
+<div class="px-3 py-1 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-green-500" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Accepted
+                    </div>
+</div>
+</article>
+<!-- Entry 2: Accepted with Deduction -->
+<article class="bg-white border border-black rounded-lg p-4 flex flex-col gap-3 active:opacity-80 transition-opacity cursor-pointer">
+<div class="flex justify-between items-start">
+<h2 class="font-bold text-lg text-black">VH-4482-BR</h2>
+<span class="text-on-surface-variant text-xs font-medium">13:45 • OCT 24</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Maria Rodriguez</span>
+<span class="text-on-surface-variant text-sm font-bold uppercase tracking-tighter">Central-2 Gate</span>
+</div>
+<div class="flex justify-between items-end pt-2 border-t border-outline-variant">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Net Weight</span>
+<span class="font-bold text-xl text-black">8,200 KG</span>
+</div>
+<div class="px-3 py-1 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-amber-400" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+                        Deducted
+                    </div>
+</div>
+</article>
+<!-- Entry 3: Rejected -->
+<article class="bg-white border border-black rounded-lg p-4 flex flex-col gap-3 active:opacity-80 transition-opacity cursor-pointer">
+<div class="flex justify-between items-start">
+<h2 class="font-bold text-lg text-black">VH-1109-KA</h2>
+<span class="text-on-surface-variant text-xs font-medium">12:10 • OCT 24</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Kofi Mensah</span>
+<span class="text-on-surface-variant text-sm font-bold uppercase tracking-tighter">East-Highlands</span>
+</div>
+<div class="flex justify-between items-end pt-2 border-t border-outline-variant">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Net Weight</span>
+<span class="font-bold text-xl text-black">0 KG</span>
+</div>
+<div class="px-3 py-1 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-red-500" data-icon="cancel" style="font-variation-settings: 'FILL' 1;">cancel</span>
+                        Rejected
+                    </div>
+</div>
+</article>
+<!-- Entry 4: Accepted -->
+<article class="bg-white border border-black rounded-lg p-4 flex flex-col gap-3 active:opacity-80 transition-opacity cursor-pointer">
+<div class="flex justify-between items-start">
+<h2 class="font-bold text-lg text-black">VH-8821-PL</h2>
+<span class="text-on-surface-variant text-xs font-medium">11:30 • OCT 24</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Chen Wei</span>
+<span class="text-on-surface-variant text-sm font-bold uppercase tracking-tighter">South-Dock</span>
+</div>
+<div class="flex justify-between items-end pt-2 border-t border-outline-variant">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Net Weight</span>
+<span class="font-bold text-xl text-black">15,670 KG</span>
+</div>
+<div class="px-3 py-1 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-green-500" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Accepted
+                    </div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-2 py-3 bg-white border-t border-black z-50">
+<div class="flex flex-col items-center justify-center text-black p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-black p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="login">login</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Check-In</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-black text-white p-2 rounded-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="history">history</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">History</span>
+</div>
+<div class="flex flex-col items-center justify-center text-black p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="assessment">assessment</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-black p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="settings">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-widest mt-1">Settings</span>
+</div>
+</nav>
+</body></html>

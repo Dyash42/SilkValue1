@@ -15,17 +15,24 @@ import type {
   Reeler as SupabaseReeler,
 } from "@silk-value/shared-types";
 
+// ── Shared Helpers ───────────────────────────────────────────────────────────
+
+export function getLocalDateString(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 // ── Sync Service Status ──────────────────────────────────────────────────────
-// SYNC DECISION: Using a module-level state pattern instead of React state
-// so that sync status can be read from any part of the app without requiring
-// a React context provider. When the app grows, this should be migrated to
-// a proper state management solution (Zustand or React Context).
 
 export type SyncServiceStatus = "idle" | "syncing" | "success" | "failed";
 
 let currentSyncStatus: SyncServiceStatus = "idle";
 let lastSyncedAt: Date | null = null;
 let lastSyncError: string | null = null;
+let isSyncLocked = false;
 
 export function getSyncStatus(): SyncServiceStatus {
   return currentSyncStatus;
@@ -41,21 +48,11 @@ export function getLastSyncError(): string | null {
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-// SYNC DECISION: Converting ISO 8601 timestamp strings from Supabase
-// (PostgreSQL timestamptz) to Unix milliseconds for WatermelonDB.
-// The WatermelonDB schema defines created_at, updated_at, arrived_at,
-// and departed_at as type 'number', and the @date decorator stores/retrieves
-// these as ms timestamps internally.
 function isoToUnixMs(iso: string | null): number {
   if (!iso) return 0;
   return new Date(iso).getTime();
 }
 
-// SYNC DECISION: On first sync (lastPulledAt === null), all records are
-// categorized as 'created' because nothing exists locally yet.
-// On incremental sync, records whose created_at is after lastPulledAt
-// represent new server-side records ('created'); all others are 'updated'.
-// This relies on created_at being immutable on the server side.
 function isNewRecord(
   createdAt: string,
   lastPulledAt: number | null,
@@ -65,12 +62,6 @@ function isNewRecord(
 }
 
 // ── Record Mappers ───────────────────────────────────────────────────────────
-// SYNC DECISION: Each mapper converts a Supabase row (typed by shared-types)
-// to a WatermelonDB raw record. Two extra fields are added to every record:
-//   server_id = row.id  → preserves the Supabase UUID as a server reference
-//   sync_status = 'synced' → marks the record as up-to-date with the server
-// These columns exist in the WatermelonDB schema but NOT in all shared-type
-// interfaces. They are local-only tracking fields for offline-first sync.
 
 interface WMDBRawRecord {
   id: string;
@@ -187,6 +178,12 @@ const emptyChangeSet: TableChangeSet = {
 export async function performSync(userId: string): Promise<void> {
   if (!userId) throw new Error("performSync called without userId");
 
+  if (isSyncLocked || currentSyncStatus === "syncing") {
+    console.warn("performSync: Sync already in progress, skipping.");
+    return;
+  }
+
+  isSyncLocked = true;
   currentSyncStatus = "syncing";
   lastSyncError = null;
 
@@ -195,25 +192,12 @@ export async function performSync(userId: string): Promise<void> {
       database,
 
       pullChanges: async ({ lastPulledAt: rawLastPulledAt }) => {
-        // SYNC DECISION: Using updated_at column for incremental sync.
-        // This assumes the Supabase tables have an updated_at column
-        // that is automatically updated by a trigger or application code.
-        // If updated_at is not reliably updated on the server, this
-        // incremental filter will miss changes. Verify triggers exist.
-
-        // Normalise WatermelonDB's number|undefined to number|null
-        // so all downstream helpers use a consistent nullable type.
         const lastPulledAt: number | null = rawLastPulledAt ?? null;
-
         const incrementalFilter = lastPulledAt
           ? new Date(lastPulledAt).toISOString()
           : null;
 
         // ── QUERY 1 — profiles ──────────────────────────────────────────
-        // SYNC DECISION: Using user_id = userId instead of id = userId
-        // because Profile.id is the table's own row UUID, while
-        // Profile.user_id is the FK to Supabase Auth. Each collector
-        // has exactly one profile record.
         let profileQuery = supabase
           .from("profiles")
           .select("*")
@@ -223,30 +207,31 @@ export async function performSync(userId: string): Promise<void> {
           profileQuery = profileQuery.gt("updated_at", incrementalFilter);
         }
 
-        const { data: profileData, error: profileError } =
-          await profileQuery;
-
-        if (profileError) {
-          throw new Error(
-            `Sync failed on profiles query: ${profileError.message}`,
-          );
-        }
-
+        const { data: profileData, error: profileError } = await profileQuery;
+        if (profileError) throw new Error(`Sync failed on profiles: ${profileError.message}`);
         const profileRows = (profileData ?? []) as SupabaseProfile[];
 
+        // Always resolve the profile ID to fetch related records (fixes BUG-01)
+        const { data: currentProfile, error: profileLookupError } = await supabase
+          .from("profiles")
+          .select("id, cluster_id")
+          .eq("user_id", userId)
+          .single();
+        if (profileLookupError || !currentProfile) {
+          throw new Error(`Sync failed: Could not resolve profile for auth user ${userId}`);
+        }
+        const profileId = currentProfile.id;
+        const clusterId = currentProfile.cluster_id;
+
         // ── QUERY 2 — routes ────────────────────────────────────────────
-        // SYNC DECISION: Fetching only today's route to minimise data
-        // transferred over mobile networks. Historical routes will be
-        // fetched on demand when the collector views past collections
-        // in a future phase.
-        // Ensure the date column in WatermelonDB schema uses the same
-        // YYYY-MM-DD format or queries will return no results.
-        const today = new Date().toISOString().split("T")[0]!;
+        // FIX: The "Early Morning" Timezone Trap
+        // Extracts local device date strictly, ignoring UTC rollover
+        const today = getLocalDateString();
 
         let routeQuery = supabase
           .from("routes")
           .select("*")
-          .eq("collector_id", userId)
+          .eq("collector_id", profileId)
           .eq("date", today);
 
         if (incrementalFilter) {
@@ -254,13 +239,7 @@ export async function performSync(userId: string): Promise<void> {
         }
 
         const { data: routeData, error: routeError } = await routeQuery;
-
-        if (routeError) {
-          throw new Error(
-            `Sync failed on routes query: ${routeError.message}`,
-          );
-        }
-
+        if (routeError) throw new Error(`Sync failed on routes: ${routeError.message}`);
         const routeRows = (routeData ?? []) as SupabaseRoute[];
 
         // ── QUERY 3 — route_stops ───────────────────────────────────────
@@ -278,60 +257,34 @@ export async function performSync(userId: string): Promise<void> {
           }
 
           const { data: stopData, error: stopError } = await stopQuery;
-
-          if (stopError) {
-            throw new Error(
-              `Sync failed on route_stops query: ${stopError.message}`,
-            );
-          }
-
+          if (stopError) throw new Error(`Sync failed on route_stops: ${stopError.message}`);
           stopRows = (stopData ?? []) as SupabaseRouteStop[];
         }
 
         // ── QUERY 4 — reelers ───────────────────────────────────────────
-        const reelerIds = [...new Set(stopRows.map((s) => s.reeler_id))];
         let reelerRows: SupabaseReeler[] = [];
+        
+        // On first sync get ALL reelers for the cluster.
+        // On incremental, we also fetch reelers by cluster but filtered by date
+        // to catch reelers whose records updated even if they aren't strictly
+        // in today's routes yet. This fixes missing reeler updates (BUG-11).
+        let reelerQuery = supabase
+          .from("reelers")
+          .select("*")
+          .eq("cluster_id", clusterId);
 
-        if (reelerIds.length > 0) {
-          let reelerQuery = supabase
-            .from("reelers")
-            .select("*")
-            .in("id", reelerIds);
-
-          if (incrementalFilter) {
-            reelerQuery = reelerQuery.gt("updated_at", incrementalFilter);
-          }
-
-          const { data: reelerData, error: reelerError } =
-            await reelerQuery;
-
-          if (reelerError) {
-            throw new Error(
-              `Sync failed on reelers query: ${reelerError.message}`,
-            );
-          }
-
-          reelerRows = (reelerData ?? []) as SupabaseReeler[];
+        if (incrementalFilter) {
+          reelerQuery = reelerQuery.gt("updated_at", incrementalFilter);
         }
 
-        // ── Assemble Changes ────────────────────────────────────────────
-        // SYNC DECISION: The keys in this object must exactly match the
-        // table name strings in apps/collector-app/src/data/schema.ts.
-        // Supabase table names and WatermelonDB table names are identical
-        // (both snake_case) so no name mapping is needed.
-        //
-        // SYNC DECISION: collection_tickets is included with empty arrays
-        // because WatermelonDB's synchronize requires all synced tables
-        // to be present in the changes object. Collection tickets are
-        // created locally and will be pushed in Phase 4.
+        const { data: reelerData, error: reelerError } = await reelerQuery;
+        if (reelerError) throw new Error(`Sync failed on reelers: ${reelerError.message}`);
+        reelerRows = (reelerData ?? []) as SupabaseReeler[];
+
         const changes = {
           profiles: buildChangeSet(profileRows, mapProfile, lastPulledAt),
           routes: buildChangeSet(routeRows, mapRoute, lastPulledAt),
-          route_stops: buildChangeSet(
-            stopRows,
-            mapRouteStop,
-            lastPulledAt,
-          ),
+          route_stops: buildChangeSet(stopRows, mapRouteStop, lastPulledAt),
           reelers: buildChangeSet(reelerRows, mapReeler, lastPulledAt),
           collection_tickets: emptyChangeSet,
         };
@@ -339,18 +292,29 @@ export async function performSync(userId: string): Promise<void> {
         return { changes, timestamp: Date.now() };
       },
 
-      // STUB: pushChanges is not implemented in Phase 3.
-      // In Phase 4 this function will push locally created
-      // collection_tickets records and updated route_stop status
-      // fields to Supabase via the NestJS backend API.
-      // Until then all writes from the collector remain local only.
-      pushChanges: async ({
-        changes: _changes,
-      }: {
-        changes: Record<string, unknown>;
-        lastPulledAt: number;
-      }): Promise<void> => {
-        return Promise.resolve();
+      pushChanges: async ({ changes, lastPulledAt }): Promise<void> => {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const token = sessionData.session?.access_token;
+
+        if (!token) {
+          throw new Error("Cannot push changes: No active session token.");
+        }
+
+        // NOTE: The API currently only processes ticket creations & stop updates.
+        // It discards other pushes right now.
+        const response = await fetch("http://10.0.2.2:3000/api/v1/sync/push", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ changes, last_pulled_at: lastPulledAt }),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Push failed: ${response.status} - ${errorText}`);
+        }
       },
     });
 
@@ -358,8 +322,9 @@ export async function performSync(userId: string): Promise<void> {
     lastSyncedAt = new Date();
   } catch (error) {
     currentSyncStatus = "failed";
-    lastSyncError =
-      error instanceof Error ? error.message : "Unknown sync error";
+    lastSyncError = error instanceof Error ? error.message : "Unknown sync error";
     throw error;
+  } finally {
+    isSyncLocked = false;
   }
 }

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QC Inspection - Factory Logistics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#000000",
+              "on-primary": "#ffffff",
+              "surface": "#ffffff",
+              "surface-container": "#f5f5f5",
+              "outline": "#000000",
+              "on-surface-variant": "#888888",
+              "outline-variant": "#dddddd",
+              "error": "#ba1a1a",
+              "surface-container-highest": "#e2e2e2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-primary antialiased pb-32">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between w-full px-4 h-14 bg-white dark:bg-black border-b border-[#DDDDDD] dark:border-zinc-800 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-black dark:text-white p-2 transition-none active:bg-black active:text-white">arrow_back</button>
+<h1 class="font-['Inter'] font-bold uppercase tracking-tight text-lg text-black dark:text-white">QC INSPECTION</h1>
+</div>
+<div class="font-black text-xl tracking-tighter text-black dark:text-white">FACTORY LOGISTICS</div>
+</header>
+<main class="max-w-3xl mx-auto px-4 py-6">
+<!-- Step Progress -->
+<div class="flex justify-between items-center mb-8 relative">
+<div class="absolute top-1/2 left-0 w-full h-px bg-outline-variant -z-10"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container border border-outline flex items-center justify-center font-bold text-sm bg-white">1</div>
+<span class="text-[10px] font-bold uppercase mt-1">Arrival</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary border border-outline flex items-center justify-center font-bold text-sm text-on-primary">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="text-[10px] font-bold uppercase mt-1">Weighing</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-white border-2 border-primary flex items-center justify-center font-black text-sm">3</div>
+<span class="text-[10px] font-bold uppercase mt-1">Inspection</span>
+</div>
+</div>
+<!-- Active Vehicle Context Card -->
+<div class="border border-outline p-4 mb-6 bg-surface-container-low flex items-center gap-4">
+<div class="w-16 h-16 bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-3xl">local_shipping</span>
+</div>
+<div>
+<div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Active Consignment</div>
+<h2 class="text-xl font-black uppercase tracking-tight leading-none">TRK-9920 / V-X4</h2>
+<div class="flex gap-4 mt-1">
+<span class="text-xs font-bold uppercase">Material: <span class="text-on-surface-variant">Raw Ore A2</span></span>
+<span class="text-xs font-bold uppercase">Weight: <span class="text-on-surface-variant">42.5 MT</span></span>
+</div>
+</div>
+</div>
+<!-- Quality Parameters List -->
+<div class="mb-8">
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Quality Parameters</h3>
+<div class="grid grid-cols-1 gap-px bg-outline-variant border border-outline-variant">
+<!-- Moisture -->
+<div class="bg-white p-4 flex justify-between items-center">
+<div>
+<div class="text-xs font-bold uppercase">Moisture Content</div>
+<div class="text-[10px] text-on-surface-variant uppercase">Target: &lt; 8.0%</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-black text-lg">7.2%</span>
+<span class="material-symbols-outlined text-green-600" style="font-variation-settings: 'FILL' 1">check_circle</span>
+</div>
+</div>
+<!-- Purity -->
+<div class="bg-white p-4 flex justify-between items-center">
+<div>
+<div class="text-xs font-bold uppercase">Chemical Purity</div>
+<div class="text-[10px] text-on-surface-variant uppercase">Target: &gt; 94.0%</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-black text-lg">96.8%</span>
+<span class="material-symbols-outlined text-green-600" style="font-variation-settings: 'FILL' 1">check_circle</span>
+</div>
+</div>
+<!-- Foreign Material -->
+<div class="bg-white p-4 flex justify-between items-center">
+<div>
+<div class="text-xs font-bold uppercase">Foreign Material</div>
+<div class="text-[10px] text-on-surface-variant uppercase">Max: 0.5%</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-black text-lg text-error">1.2%</span>
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1">warning</span>
+</div>
+</div>
+<!-- Visual -->
+<div class="bg-white p-4 flex justify-between items-center">
+<div class="text-xs font-bold uppercase">Visual Grade</div>
+<div class="flex items-center gap-2">
+<span class="font-black text-lg uppercase">Grade A</span>
+<span class="material-symbols-outlined text-green-600" style="font-variation-settings: 'FILL' 1">check_circle</span>
+</div>
+</div>
+<!-- Smell -->
+<div class="bg-white p-4 flex justify-between items-center">
+<div class="text-xs font-bold uppercase">Smell / Odor Test</div>
+<div class="flex items-center gap-2">
+<span class="font-black text-lg uppercase">Neutral</span>
+<span class="material-symbols-outlined text-green-600" style="font-variation-settings: 'FILL' 1">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Final Accepted Weight Card -->
+<div class="border-2 border-primary bg-surface p-6 mb-8 text-center relative overflow-hidden">
+<div class="text-xs font-bold uppercase tracking-[0.2em] mb-2 opacity-60">Final Net Weight Calculation</div>
+<div class="text-6xl font-black tracking-tighter">41,990 <span class="text-2xl">KG</span></div>
+<div class="mt-2 text-[10px] font-bold uppercase text-on-surface-variant">Deduction applied: -510 KG (Foreign Mat.)</div>
+<div class="absolute top-0 right-0 w-16 h-16 pointer-events-none">
+<svg fill="none" height="64" viewbox="0 0 64 64" width="64" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0H64V64L0 0Z" fill="black" fill-opacity="0.05"></path>
+</svg>
+</div>
+</div>
+<!-- QC Decision Buttons -->
+<div class="flex flex-col gap-3 mb-12">
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Final Decision</h3>
+<button class="w-full h-[52px] bg-white border border-outline text-primary font-bold uppercase text-xs tracking-widest hover:bg-surface-container transition-none flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">verified</span> Accept Manifest
+            </button>
+<button class="w-full h-[52px] bg-primary text-on-primary font-bold uppercase text-xs tracking-widest flex items-center justify-center gap-2 border-2 border-primary">
+<span class="material-symbols-outlined">remove_circle_outline</span> Accept with Deduction
+            </button>
+<button class="w-full h-[52px] bg-white border border-error text-error font-bold uppercase text-xs tracking-widest hover:bg-error-container transition-none flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">block</span> Reject Shipment
+            </button>
+</div>
+</main>
+<!-- Sticky Confirm Button -->
+<div class="fixed bottom-[60px] left-0 w-full p-4 bg-white/80 backdrop-blur-sm z-40 border-t border-outline-variant">
+<button class="w-full h-[52px] bg-primary text-on-primary font-bold uppercase text-xs tracking-widest flex items-center justify-center gap-2 shadow-xl">
+            Confirm QC Decision
+        </button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-white dark:bg-black border-t border-[#DDDDDD] dark:border-zinc-800 h-[60px]">
+<a class="flex flex-col items-center justify-center text-[#888888] h-full flex-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['Inter'] font-bold text-[10px] uppercase tracking-wider mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#888888] h-full flex-1" href="#">
+<span class="material-symbols-outlined">login</span>
+<span class="font-['Inter'] font-bold text-[10px] uppercase tracking-wider mt-1">Check-In</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#888888] h-full flex-1" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-['Inter'] font-bold text-[10px] uppercase tracking-wider mt-1">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#888888] h-full flex-1" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-['Inter'] font-bold text-[10px] uppercase tracking-wider mt-1">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#888888] h-full flex-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Inter'] font-bold text-[10px] uppercase tracking-wider mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

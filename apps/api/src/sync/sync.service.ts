@@ -75,7 +75,10 @@ export class SyncService {
         continue;
       }
 
-      // For first sync, everything is "created". For subsequent, everything is "updated".
+      // For first sync, everything is "created" strictly checking lastPulledAt 0
+      // For subsequent, we should technically diff against lastPulledAt vs created_at,
+      // but for simplicity in this implementation, if lastPulledAt === 0 we treat all
+      // as created. Otherwise we treat all as updated.
       if (lastPulledAt === "0") {
         changes[table] = { created: data || [], updated: [], deleted: [] };
       } else {
@@ -89,72 +92,7 @@ export class SyncService {
     };
   }
 
-  /**
-   * PUSH: Accept locally created/updated records and upsert into Supabase.
-   * Returns ID mappings for newly created records.
-   */
-  async pushChanges(
-    user: Profile,
-    changes: Record<
-      string,
-      {
-        created: Record<string, unknown>[];
-        updated: Record<string, unknown>[];
-        deleted: string[];
-      }
-    >
-  ): Promise<{ ok: boolean; idMappings: Record<string, string> }> {
-    const client = this.supabase.getClient();
-    const idMappings: Record<string, string> = {};
 
-    for (const [tableName, tableChanges] of Object.entries(changes)) {
-      if (!SYNCABLE_TABLES.includes(tableName as SyncableTable)) {
-        this.logger.warn(`Ignoring non-syncable table: ${tableName}`);
-        continue;
-      }
-
-      // Handle CREATED records
-      for (const record of tableChanges.created || []) {
-        const localId = record.id as string;
-
-        // Strip local-only fields before inserting
-        const { id: _id, sync_status: _ss, ...serverRecord } = record;
-
-        const { data, error } = await client
-          .from(tableName)
-          .insert({ ...serverRecord, created_at: new Date().toISOString() } as never)
-          .select("id")
-          .single();
-
-        if (error) {
-          this.logger.error(`Push create error on ${tableName}: ${error.message}`);
-          continue;
-        }
-
-        if (data && localId) {
-          idMappings[localId] = (data as { id: string }).id;
-        }
-      }
-
-      // Handle UPDATED records (Server Wins for financial fields)
-      for (const record of tableChanges.updated || []) {
-        const serverId = record.server_id || record.id;
-
-        const { id: _id, sync_status: _ss, server_id: _si, ...updateData } = record;
-
-        const { error } = await client
-          .from(tableName)
-          .update({ ...updateData, updated_at: new Date().toISOString() } as never)
-          .eq("id", serverId as string);
-
-        if (error) {
-          this.logger.error(`Push update error on ${tableName}: ${error.message}`);
-        }
-      }
-    }
-
-    return { ok: true, idMappings };
-  }
 
   async processPush(
     changes: PushSyncDto,
@@ -235,10 +173,10 @@ export class SyncService {
           updated_at: new Date(record.updated_at).toISOString(),
         };
         
-        if (record.arrived_at) {
+        if (record.arrived_at != null) {
           updatePayload.arrived_at = new Date(record.arrived_at).toISOString();
         }
-        if (record.departed_at) {
+        if (record.departed_at != null) {
           updatePayload.departed_at = new Date(record.departed_at).toISOString();
         }
 

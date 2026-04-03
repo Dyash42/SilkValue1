@@ -4,12 +4,15 @@ import {
   IsNumber,
   IsOptional,
   IsIn,
+  IsUUID,
   IsArray,
   ValidateNested,
 } from 'class-validator';
+import { Grade, StopStatus, SyncStatus, TicketStatus } from '@silk-value/shared-types';
 
 export class CollectionTicketRecordDto {
   @IsString()
+  @IsUUID(4)
   id!: string;
 
   @IsString()
@@ -25,7 +28,7 @@ export class CollectionTicketRecordDto {
   collector_id!: string;
 
   @IsString()
-  @IsIn(['A+', 'A', 'B', 'C', 'Reject'])
+  @IsIn(Object.values(Grade))
   grade!: string;
 
   @IsNumber()
@@ -51,7 +54,7 @@ export class CollectionTicketRecordDto {
   ticket_number!: string;
 
   @IsString()
-  @IsIn(['collected', 'at_gate', 'verified', 'paid'])
+  @IsIn(Object.values(TicketStatus))
   status!: string;
 
   @IsString()
@@ -63,7 +66,7 @@ export class CollectionTicketRecordDto {
   server_id?: string;
 
   @IsString()
-  @IsIn(['pending', 'synced', 'failed'])
+  @IsIn(Object.values(SyncStatus))
   sync_status!: string;
 
   @IsNumber()
@@ -75,6 +78,7 @@ export class CollectionTicketRecordDto {
 
 export class RouteStopRecordDto {
   @IsString()
+  @IsUUID(4)
   id!: string;
 
   @IsString()
@@ -87,7 +91,7 @@ export class RouteStopRecordDto {
   stop_order!: number;
 
   @IsString()
-  @IsIn(['pending', 'collected', 'skipped'])
+  @IsIn(Object.values(StopStatus))
   status!: string;
 
   @IsNumber()
@@ -103,7 +107,7 @@ export class RouteStopRecordDto {
   server_id?: string;
 
   @IsString()
-  @IsIn(['pending', 'synced', 'failed'])
+  @IsIn(Object.values(SyncStatus))
   sync_status!: string;
 
   @IsNumber()

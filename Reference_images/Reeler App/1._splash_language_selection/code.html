@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#000000",
+              "background-light": "#f7f7f7",
+              "background-dark": "#191919",
+            },
+            fontFamily: {
+              "display": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<title>Silk Value - Language Selection</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-white dark:bg-background-dark group/design-root overflow-x-hidden">
+<!-- Splash / Logo Section -->
+<div class="flex flex-col items-center justify-center pt-20 pb-12">
+<div class="w-24 h-24 bg-primary dark:bg-white flex items-center justify-center rounded-xl mb-6">
+<span class="material-symbols-outlined text-white dark:text-primary text-5xl">diamond</span>
+</div>
+<h1 class="text-primary dark:text-white text-4xl font-bold tracking-tighter">SILK VALUE</h1>
+<p class="text-primary/60 dark:text-white/60 text-sm mt-2 tracking-widest uppercase">Premium Quality</p>
+</div>
+<!-- Visual Element -->
+<div class="@container px-6">
+<div class="@[480px]:px-4 @[480px]:py-3">
+<div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-primary/5 dark:bg-white/5 @[480px]:rounded min-h-[160px] border border-primary/10 dark:border-white/10" data-alt="Luxury silk fabric textures in monochrome tones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAiJTT5O52JkMJFuawx4VTbvjWvLslbP-NACYnOWZrUo3TvyKjPhpNBG-_N4dNbPNxqQGyf_ykIFgY1QZ3C3ukFXuRedM3RWC8RsrPV9KQ8WbM3FJutvC9l2Lu7ZcoDEM2uRaY4Dva8u1S2WZvaM4_AIaEB9Lu4uCwpc2oQgn-3RCZwJH-SnEdDnxUGHFw_XRukSiHHxwA3sMCPPMvdjKE-2qWkqEsRkZrLsUzStvij1nVKgaEo5iJexdHdy5WvY97iIw5bd59j3SA");'>
+</div>
+</div>
+</div>
+<!-- Language Selection Header -->
+<div class="px-6 pt-10 pb-4">
+<h3 class="text-primary dark:text-white tracking-tight text-2xl font-bold leading-tight">Select Language</h3>
+<p class="text-primary/60 dark:text-white/60 text-sm">Choose your preferred language to continue</p>
+</div>
+<!-- Language Buttons -->
+<div class="flex justify-center pb-20">
+<div class="flex flex-1 gap-3 max-w-[480px] flex-col items-stretch px-6 py-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-between overflow-hidden rounded-lg h-14 px-6 bg-primary text-white dark:bg-white dark:text-primary text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-primary dark:border-white">
+<span class="truncate">English</span>
+<span class="material-symbols-outlined text-xl">check_circle</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-between overflow-hidden rounded-lg h-14 px-6 bg-transparent text-primary dark:text-white text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-primary/20 dark:border-white/20 hover:border-primary dark:hover:border-white transition-colors">
+<span class="truncate">ಕನ್ನಡ (Kannada)</span>
+<span class="material-symbols-outlined text-xl opacity-0">chevron_right</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-between overflow-hidden rounded-lg h-14 px-6 bg-transparent text-primary dark:text-white text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-primary/20 dark:border-white/20 hover:border-primary dark:hover:border-white transition-colors">
+<span class="truncate">తెలుగు (Telugu)</span>
+<span class="material-symbols-outlined text-xl opacity-0">chevron_right</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-between overflow-hidden rounded-lg h-14 px-6 bg-transparent text-primary dark:text-white text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-primary/20 dark:border-white/20 hover:border-primary dark:hover:border-white transition-colors">
+<span class="truncate">தமிழ் (Tamil)</span>
+<span class="material-symbols-outlined text-xl opacity-0">chevron_right</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-between overflow-hidden rounded-lg h-14 px-6 bg-transparent text-primary dark:text-white text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-primary/20 dark:border-white/20 hover:border-primary dark:hover:border-white transition-colors">
+<span class="truncate">हिन्दी (Hindi)</span>
+<span class="material-symbols-outlined text-xl opacity-0">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Bottom Footer -->
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-t border-primary/5 dark:border-white/5 flex justify-center">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-12 bg-primary text-white dark:bg-white dark:text-primary text-base font-bold leading-normal tracking-[0.015em] w-full shadow-lg">
+<span class="truncate">Continue</span>
+</button>
+</div>
+</div>
+</body></html>

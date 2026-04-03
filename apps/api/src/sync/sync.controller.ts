@@ -38,18 +38,7 @@ export class SyncController {
     return this.syncService.pullChanges(req.user, lastPulledAt);
   }
 
-  /**
-   * PUSH — Mobile app pushes locally created/updated records.
-   * Returns { ok: true, idMappings: { localId: serverId } }
-   */
-  @Post()
-  @Roles("collector", "reeler", "supervisor", "admin")
-  async push(
-    @Body() body: SyncPushBody,
-    @Req() req: { user: Profile }
-  ): Promise<any> {
-    return this.syncService.pushChanges(req.user, body.changes);
-  }
+
 
   /**
    * Receives WatermelonDB push changes from the mobile collector app.

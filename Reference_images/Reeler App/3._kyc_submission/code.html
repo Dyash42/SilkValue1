@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KYC Submission</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col max-w-md mx-auto bg-white dark:bg-background-dark shadow-xl overflow-x-hidden">
+<!-- TopAppBar -->
+<div class="sticky top-0 z-10 flex items-center bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 p-4 justify-between">
+<div class="text-primary dark:text-slate-100 flex size-10 shrink-0 items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined">arrow_back_ios</span>
+</div>
+<h2 class="text-primary dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">KYC Submission</h2>
+</div>
+<div class="p-4 space-y-6">
+<!-- Personal Details Section -->
+<section>
+<h3 class="text-primary dark:text-slate-100 text-xl font-bold mb-4">Personal Details</h3>
+<div class="space-y-4">
+<label class="flex flex-col w-full">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Full Name</p>
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="As per Aadhaar/PAN" type="text"/>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Date of Birth</p>
+<div class="relative">
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="DD/MM/YYYY" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-slate-400">calendar_today</span>
+</div>
+</label>
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Gender</p>
+<select class="form-select w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary">
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</label>
+</div>
+</div>
+</section>
+<!-- Address Section -->
+<section>
+<h3 class="text-primary dark:text-slate-100 text-lg font-bold mb-4">Residential Address</h3>
+<div class="space-y-4">
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Village / Street</p>
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Enter village or street name" type="text"/>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">District</p>
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="District" type="text"/>
+</label>
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">State</p>
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="State" type="text"/>
+</label>
+</div>
+</div>
+</section>
+<!-- Documents Section -->
+<section>
+<h3 class="text-primary dark:text-slate-100 text-lg font-bold mb-4">Document Verification</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center gap-2 bg-primary text-white p-4 rounded-lg hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">upload_file</span>
+<span class="text-xs font-bold uppercase tracking-wider">Upload Aadhaar</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-primary text-white p-4 rounded-lg hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">badge</span>
+<span class="text-xs font-bold uppercase tracking-wider">Upload PAN</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-primary text-white p-4 rounded-lg hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">camera_front</span>
+<span class="text-xs font-bold uppercase tracking-wider">Live Selfie</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-primary text-white p-4 rounded-lg hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">location_on</span>
+<span class="text-xs font-bold uppercase tracking-wider">Capture GPS</span>
+</button>
+</div>
+</section>
+<!-- Bank Details Section -->
+<section>
+<h3 class="text-primary dark:text-slate-100 text-lg font-bold mb-4">Bank Details</h3>
+<div class="space-y-4">
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Account Number</p>
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Enter account number" type="text"/>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">IFSC Code</p>
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="IFSC0001234" type="text"/>
+</label>
+<label class="flex flex-col">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Bank Name</p>
+<input class="form-input w-full rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-primary dark:text-white h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Bank Name" type="text"/>
+</label>
+</div>
+</div>
+</section>
+<!-- Consent -->
+<div class="flex items-start gap-3 py-4 border-t border-slate-200 dark:border-slate-800">
+<input class="size-6 rounded border-slate-300 text-primary focus:ring-primary mt-1" id="consent" type="checkbox"/>
+<label class="text-sm text-slate-700 dark:text-slate-300 leading-tight" for="consent">
+                    I agree to share my data and documents for the purpose of KYC verification and account setup. I confirm all details provided are true and correct.
+                </label>
+</div>
+<!-- Footer Action -->
+<div class="pt-2 pb-8">
+<button class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-[0.98]">
+                    Review &amp; Submit
+                </button>
+</div>
+</div>
+</div>
+</body></html>
