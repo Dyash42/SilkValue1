@@ -3,7 +3,7 @@
 // Metro Bundler will crash with undefined modules if barrel files mix
 // explicit and wildcard exports, or if wildcard-only barrels encounter
 // circular evaluation timing.
-
+//packages\shared-types\src\index.ts
 // ── Enums ────────────────────────────────────────────────────────────────────
 export {
   Role,
@@ -16,7 +16,7 @@ export {
   StopStatus,
   KycStatus,
   NotificationType,
-} from './enums.js';
+} from './enums';
 
 // ── Database Row Interfaces ──────────────────────────────────────────────────
 export type {
@@ -32,4 +32,4 @@ export type {
   Payment,
   Notification,
   Database,
-} from './database.js';
+} from './database';

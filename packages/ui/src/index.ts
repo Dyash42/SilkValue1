@@ -36,6 +36,22 @@ export type { CollectionHistoryCardProps } from "./components/CollectionHistoryC
 export { KycStatusBanner } from "./components/KycStatusBanner";
 export type { KycStatusBannerProps, KycStatus } from "./components/KycStatusBanner";
 
+// ── Collector App Workflow components (Screens 03–08) ────────────────────────
+export { WeightDisplay } from "./components/WeightDisplay";
+export type { WeightDisplayProps } from "./components/WeightDisplay";
+export { WeightInputField } from "./components/WeightInputField";
+export type { WeightInputFieldProps } from "./components/WeightInputField";
+export { GradeSelector } from "./components/GradeSelector";
+export type { GradeSelectorProps } from "./components/GradeSelector";
+export { TicketSummaryCard } from "./components/TicketSummaryCard";
+export type { TicketSummaryCardProps } from "./components/TicketSummaryCard";
+export { BluetoothDeviceRow } from "./components/BluetoothDeviceRow";
+export type { BluetoothDeviceRowProps } from "./components/BluetoothDeviceRow";
+export { GradeBreakdownRow } from "./components/GradeBreakdownRow";
+export type { GradeBreakdownRowProps } from "./components/GradeBreakdownRow";
+export { ScanSimulatorFrame } from "./components/ScanSimulatorFrame";
+export type { ScanSimulatorFrameProps } from "./components/ScanSimulatorFrame";
+
 // ── Factory Gate App components ──────────────────────────────────────────────
 export { StepProgressBar } from "./components/StepProgressBar";
 export type { StepProgressBarProps, StepConfig } from "./components/StepProgressBar";

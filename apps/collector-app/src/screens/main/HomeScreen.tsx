@@ -25,6 +25,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { AppStackParamList } from "../../navigation/types";
 import withObservables from "@nozbe/with-observables";
 import {
   theme,
@@ -269,24 +272,22 @@ const HomeContentView: React.FC<HomeContentProps> = ({
   const [isGpsEnabled, setIsGpsEnabled] = useState<boolean>(true);
 
   // ── Handlers ────────────────────────────────────────────────────────
+  const nav = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
+
   const handleStartRoute = (): void => {
-    console.log("Start Route pressed");
-    // TODO: onPress should call route start service and navigate
-    // to RouteMapView when route management is implemented
+    nav.navigate("RouteMap");
   };
 
   const handleStopPress = (stopNumber: number): void => {
-    console.log(`Stop ${stopNumber} pressed`);
-    // TODO: onPress should navigate to QRScan screen
-    // when QRScan screen is built
+    // Navigate to the route map where user can select the stop
+    nav.navigate("RouteMap");
   };
 
   const handleTabPress = (tab: TabName): void => {
-    console.log(`Tab pressed: ${tab}`);
-    // TODO: Home tab — already on this screen, no navigation needed
-    // TODO: Map tab — navigate to RouteMapView when built
+    if (tab === "Home") return; // already on this screen
+    if (tab === "Map") nav.navigate("RouteMap");
+    if (tab === "Settings") nav.navigate("BluetoothSetup");
     // TODO: Collections tab — navigate to PastCollections when built
-    // TODO: Settings tab — navigate to Settings when built
   };
 
   const handleTurnOnGps = (): void => {

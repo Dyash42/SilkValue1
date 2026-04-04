@@ -11,15 +11,14 @@ export type AuthStackParamList = {
 // ── App Stack ────────────────────────────────────────────────────────────────
 export type AppStackParamList = {
   Home: undefined;
-  RouteMap: undefined; // Screen 03 — Route Map View
-  // TODO: Add QRScan screen params when QR screen is built
-  // TODO: Add CollectionEntry screen params when entry screen is built
-  // TODO: Add CollectionTicket screen params when ticket screen is built
-  // TODO: Add TripSheet screen params when trip sheet screen is built
-  // TODO: Add PastCollections screen params when history screen is built
-  // TODO: Add BluetoothSetup screen params when BT screen is built
-  // TODO: Add NavigateToStop screen params when nav screen is built
-  // TODO: Add ArrivedAtStop screen params when arrival screen is built
+  RouteMap: undefined;
+  NavigateToStop: { stopId: string; stopOrder: number; reelerName: string; villageName: string; expectedWeightKg: number; distanceKm: number };
+  ArrivedAtStop: { stopId: string; reelerName: string; villageName: string; expectedWeightKg: number };
+  QRScan: { stopId: string };
+  CollectionEntry: { stopId: string; reelerId: string; reelerName: string; villageName: string };
+  CollectionTicket: { ticketData: "mock" };
+  TripSheetSummary: undefined;
+  BluetoothSetup: undefined;
 };
 
 // ── Root Stack ───────────────────────────────────────────────────────────────

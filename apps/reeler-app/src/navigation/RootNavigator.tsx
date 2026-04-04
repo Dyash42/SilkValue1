@@ -9,8 +9,7 @@ import { AppNavigator } from "./AppNavigator";
 export const RootNavigator: React.FC = () => {
   // MOCK: Toggle between auth and app.
   // For UI review, default to showing auth flow.
-  // Set to true to jump straight to main app for reviewing dashboard screens.
-  const [isAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated] = useState<boolean>(true);
 
   if (isAuthenticated) {
     return <AppNavigator />;
