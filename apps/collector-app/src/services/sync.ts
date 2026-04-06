@@ -8,6 +8,7 @@
 import { synchronize } from "@nozbe/watermelondb/sync";
 import database from "../data/database";
 import { supabase } from "./auth";
+import { API_BASE_URL } from "../config/api";
 import type {
   Profile as SupabaseProfile,
   Route as SupabaseRoute,
@@ -302,7 +303,7 @@ export async function performSync(userId: string): Promise<void> {
 
         // NOTE: The API currently only processes ticket creations & stop updates.
         // It discards other pushes right now.
-        const response = await fetch("http://10.0.2.2:3000/api/v1/sync/push", {
+        const response = await fetch(`${API_BASE_URL}/api/v1/sync/push`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -8,7 +8,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
 } from "react-native";
 import { MOCK_EXPECTED_VEHICLES } from "../mock/gateMockData";
 
@@ -16,18 +15,7 @@ export const VehicleCheckInScreen: React.FC<any> = ({ navigation }) => {
   const vehicles = MOCK_EXPECTED_VEHICLES.filter((v) => v.status !== "checked_in");
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Top App Bar */}
-      <View style={styles.topBar}>
-        <View style={styles.topBarLeft}>
-          <TouchableOpacity onPress={() => navigation?.goBack?.()} activeOpacity={0.7}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.topBarTitle}>VEHICLE CHECK-IN</Text>
-        </View>
-        <Text style={styles.helpIcon}>?</Text>
-      </View>
-
+    <View style={styles.container}>
       {/* Step Progress */}
       <View style={styles.stepBar}>
         <View style={[styles.stepItem, styles.stepItemActive]}>
@@ -130,7 +118,7 @@ export const VehicleCheckInScreen: React.FC<any> = ({ navigation }) => {
         ))}
       </ScrollView>
 
-      {/* Sticky Bottom Action */}
+      {/* Bottom Action — pinned via Flexbox, no absolute positioning */}
       <View style={styles.bottomAction}>
         <TouchableOpacity
           style={styles.confirmButton}
@@ -141,22 +129,12 @@ export const VehicleCheckInScreen: React.FC<any> = ({ navigation }) => {
           <Text style={styles.confirmText}>CONFIRM & CHECK IN</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#FFFFFF" },
-  topBar: {
-    height: 56, backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1, borderBottomColor: "#DDDDDD",
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  topBarLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
-  backIcon: { fontSize: 24, color: "#000000" },
-  topBarTitle: { fontSize: 18, fontWeight: "900", color: "#000000", letterSpacing: -0.5, textTransform: "uppercase" },
-  helpIcon: { fontSize: 20, color: "#000000" },
+  container: { flex: 1, backgroundColor: "#FFFFFF" },
 
   // Step Bar
   stepBar: {
@@ -172,7 +150,7 @@ const styles = StyleSheet.create({
   stepLabelActive: { fontSize: 10, fontWeight: "900", color: "#000000", textTransform: "uppercase", marginTop: 2 },
   stepChevron: { fontSize: 14, color: "#888888" },
 
-  scrollContent: { paddingBottom: 140 },
+  scrollContent: { paddingBottom: 16 },
 
   // Camera View
   cameraView: {
@@ -230,10 +208,9 @@ const styles = StyleSheet.create({
   tagSecondary: { backgroundColor: "#F5F5F5", borderWidth: 1, borderColor: "#000000", paddingHorizontal: 8, paddingVertical: 4 },
   tagSecondaryText: { fontSize: 10, fontWeight: "700", color: "#000000", textTransform: "uppercase" },
 
-  // Bottom Action
+  // Bottom Action — Flexbox pinned, no absolute
   bottomAction: {
-    position: "absolute", bottom: 60, left: 0, right: 0,
-    padding: 16, backgroundColor: "rgba(255,255,255,0.9)",
+    padding: 16, backgroundColor: "#FFFFFF",
     borderTopWidth: 1, borderTopColor: "#C6C6C6",
   },
   confirmButton: {

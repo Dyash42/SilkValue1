@@ -8,7 +8,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
 } from "react-native";
 import { MOCK_QC_PARAMETERS } from "../mock/gateMockData";
 
@@ -16,18 +15,7 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
   const qcParams = MOCK_QC_PARAMETERS;
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Top App Bar */}
-      <View style={styles.topBar}>
-        <View style={styles.topBarLeft}>
-          <TouchableOpacity onPress={() => navigation?.goBack?.()} activeOpacity={0.7}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.topBarTitle}>QC INSPECTION</Text>
-        </View>
-        <Text style={styles.brandText}>FACTORY LOGISTICS</Text>
-      </View>
-
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Step Progress */}
         <View style={styles.stepRow}>
@@ -141,7 +129,7 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Sticky Confirm Button */}
+      {/* Sticky Confirm Button — Flexbox pinned, no absolute */}
       <View style={styles.stickyBottom}>
         <TouchableOpacity
           style={styles.stickyButton}
@@ -151,23 +139,13 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
           <Text style={styles.stickyButtonText}>CONFIRM QC DECISION</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#FFFFFF" },
-  topBar: {
-    height: 56, backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1, borderBottomColor: "#DDDDDD",
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  topBarLeft: { flexDirection: "row", alignItems: "center", gap: 16 },
-  backIcon: { fontSize: 24, color: "#000000" },
-  topBarTitle: { fontSize: 16, fontWeight: "700", color: "#000000", letterSpacing: 0.5, textTransform: "uppercase" },
-  brandText: { fontSize: 16, fontWeight: "900", color: "#000000", letterSpacing: -0.5, textTransform: "uppercase" },
-  content: { padding: 16, paddingBottom: 140, gap: 24 },
+  container: { flex: 1, backgroundColor: "#FFFFFF" },
+  content: { padding: 16, paddingBottom: 16, gap: 24 },
 
   // Step Progress
   stepRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", position: "relative" },
@@ -225,8 +203,8 @@ const styles = StyleSheet.create({
   rejectIcon: { fontSize: 18, color: "#BA1A1A" },
   rejectText: { fontSize: 11, fontWeight: "700", color: "#BA1A1A", letterSpacing: 1, textTransform: "uppercase" },
 
-  // Sticky Bottom
-  stickyBottom: { position: "absolute", bottom: 60, left: 0, right: 0, padding: 16, backgroundColor: "rgba(255,255,255,0.9)", borderTopWidth: 1, borderTopColor: "#C6C6C6" },
+  // Sticky Bottom — Flexbox pinned, no absolute
+  stickyBottom: { padding: 16, backgroundColor: "#FFFFFF", borderTopWidth: 1, borderTopColor: "#C6C6C6" },
   stickyButton: { height: 52, backgroundColor: "#000000", justifyContent: "center", alignItems: "center" },
   stickyButtonText: { fontSize: 11, fontWeight: "700", color: "#FFFFFF", letterSpacing: 1, textTransform: "uppercase" },
 });

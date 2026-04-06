@@ -24,9 +24,14 @@ import {
   BottomNavBar,
 } from "@silk-value/ui";
 import type { TabName } from "@silk-value/ui";
-import { Grade } from "@silk-value/shared-types";
+import { Grade, TicketStatus, SyncStatus, StopStatus } from "@silk-value/shared-types";
 import type { AppStackParamList } from "../../navigation/types";
 import { MOCK_COLLECTION_ENTRY } from "../../mock/collectorMockData";
+import database from "../../data/database";
+import CollectionTicket from "../../data/models/CollectionTicket";
+import RouteStop from "../../data/models/RouteStop";
+import { Q } from "@nozbe/watermelondb";
+import { supabase } from "../../services/auth";
 
 type Props = NativeStackScreenProps<AppStackParamList, "CollectionEntry">;
 
@@ -69,18 +74,147 @@ export const CollectionEntryScreen: React.FC<Props> = ({
     Alert.alert("Camera Stub", "expo-image-picker would open here.\n\n// STUB: Camera launch");
   };
 
-  const handleConfirmTicket = (): void => {
+  // Ticket number format: SV-YYYYMMDD-XXXX (4 random hex digits)
+  const generateTicketNumber = (): string => {
+    const now = new Date();
+    const datePart = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+    ].join("");
+    const suffix = Math.floor(Math.random() * 0xFFFF)
+      .toString(16)
+      .toUpperCase()
+      .padStart(4, "0");
+    return `SV-${datePart}-${suffix}`;
+  };
+
+  const handleConfirmTicket = async (): Promise<void> => {
+    // ── Validation ────────────────────────────────────────────────
     if (!selectedGrade) {
-      Alert.alert("Missing Grade", "Please select a quality grade before continuing.");
+      Alert.alert(
+        "Missing Grade",
+        "Please select a quality grade before continuing.",
+      );
       return;
     }
     if (netWeight <= 0) {
-      Alert.alert("Invalid Weight", "Net weight must be greater than zero.");
+      Alert.alert(
+        "Invalid Weight",
+        "Net weight must be greater than zero.",
+      );
+      return;
+    }
+    const grossKg = parseFloat(grossWeight) || 0;
+    const tareKg = parseFloat(tareWeight) || 0;
+    if (grossKg <= 0) {
+      Alert.alert("Invalid Weight", "Gross weight must be greater than zero.");
+      return;
+    }
+    if (tareKg < 0) {
+      Alert.alert("Invalid Weight", "Tare weight cannot be negative.");
       return;
     }
 
-    // TODO: Wire to WatermelonDB — create collection_ticket record
-    navigation.navigate("CollectionTicket", { ticketData: "mock" });
+    // ── Get collector ID from session ─────────────────────────────
+    // We need the profiles.id (not auth UUID) to store as collector_id.
+    // This matches what was synced into WatermelonDB profiles table.
+    let collectorProfileId: string;
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const authUserId = sessionData.session?.user?.id;
+      if (!authUserId) {
+        Alert.alert("Session Error", "No active session. Please log in again.");
+        return;
+      }
+      // Look up profile by user_id to get the profiles.id
+      const profiles = await database
+        .get("profiles")
+        .query(
+          Q.where("user_id", authUserId)
+        )
+        .fetch();
+      if (profiles.length === 0) {
+        Alert.alert(
+          "Profile Error",
+          "Your profile is not synced. Please return home and sync first.",
+        );
+        return;
+      }
+      collectorProfileId = profiles[0].id;
+    } catch (err) {
+      Alert.alert("Error", "Could not read your profile. Please try again.");
+      return;
+    }
+
+    // ── Get routeId from the RouteStop ────────────────────────────
+    let routeId: string;
+    try {
+      const stop = await database
+        .get<RouteStop>("route_stops")
+        .find(stopId);
+      routeId = stop.routeId;
+    } catch (err) {
+      Alert.alert(
+        "Stop Error",
+        "Could not find this route stop. Please go back and try again.",
+      );
+      return;
+    }
+
+    // ── Compute financials ────────────────────────────────────────
+    const totalAmount = netWeight * pricePerKg;
+
+    // ── Write to WatermelonDB (atomic) ────────────────────────────
+    let createdTicketId: string;
+    try {
+      await database.write(async () => {
+        // 1. Create the collection ticket
+        const ticketsCollection = database.get<CollectionTicket>(
+          "collection_tickets",
+        );
+        const newTicket = await ticketsCollection.create((record) => {
+          record.routeStopId = stopId;
+          record.routeId = routeId;
+          record.reelerId = reelerId;
+          record.collectorId = collectorProfileId;
+          record.grade = selectedGrade as Grade;
+          record.grossWeightKg = grossKg;
+          record.tareWeightKg = tareKg;
+          record.netWeightKg = netWeight;
+          record.moisturePct = null;
+          record.pricePerKg = pricePerKg;
+          record.totalAmount = totalAmount;
+          record.ticketNumber = generateTicketNumber();
+          record.status = TicketStatus.CONFIRMED;
+          record.notes = notes.trim() || null;
+          record.serverId = null;
+          record.serverSyncStatus = SyncStatus.CREATED;
+        });
+        createdTicketId = newTicket.id;
+
+        // 2. Mark the RouteStop as COLLECTED and set departed_at
+        const stop = await database
+          .get<RouteStop>("route_stops")
+          .find(stopId);
+        await stop.update((record) => {
+          record.status = StopStatus.COLLECTED;
+          record.departedAt = new Date();
+          record.serverSyncStatus = SyncStatus.UPDATED;
+        });
+      });
+    } catch (err) {
+      console.error("CollectionEntry: Write failed:", err);
+      Alert.alert(
+        "Save Failed",
+        "Could not save the collection ticket. Please check your data and try again.",
+      );
+      return;
+    }
+
+    // ── Navigate to ticket receipt ────────────────────────────────
+    // Pass the real WatermelonDB ticket ID — screen reads from DB
+    navigation.navigate("CollectionTicket", { ticketId: createdTicketId! });
   };
 
   const handleTabPress = (tab: TabName): void => {

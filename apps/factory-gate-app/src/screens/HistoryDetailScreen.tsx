@@ -6,29 +6,16 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
 } from "react-native";
 import { MOCK_HISTORY } from "../mock/gateMockData";
 
-export const HistoryDetailScreen: React.FC<any> = ({ navigation, route }) => {
+export const HistoryDetailScreen: React.FC<any> = ({ route }) => {
   const entryId = route?.params?.entryId ?? "h-001";
   const entry = MOCK_HISTORY.find((h) => h.id === entryId) ?? MOCK_HISTORY[0];
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Top App Bar */}
-      <View style={styles.topBar}>
-        <View style={styles.topBarLeft}>
-          <TouchableOpacity onPress={() => navigation?.goBack?.()} activeOpacity={0.7}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.topBarTitle}>VEHICLE DETAIL</Text>
-        </View>
-        <Text style={styles.factoryIcon}>🏭</Text>
-      </View>
-
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Header */}
         <View style={styles.headerSection}>
@@ -146,22 +133,12 @@ export const HistoryDetailScreen: React.FC<any> = ({ navigation, route }) => {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#FFFFFF" },
-  topBar: {
-    height: 64, backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1, borderBottomColor: "#000000",
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  topBarLeft: { flexDirection: "row", alignItems: "center", gap: 16 },
-  backIcon: { fontSize: 24, color: "#000000" },
-  topBarTitle: { fontSize: 22, fontWeight: "700", color: "#000000", letterSpacing: -1, textTransform: "uppercase" },
-  factoryIcon: { fontSize: 24 },
+  container: { flex: 1, backgroundColor: "#FFFFFF" },
   content: { padding: 16, paddingBottom: 32, gap: 32 },
 
   // Header

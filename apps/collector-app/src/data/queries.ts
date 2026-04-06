@@ -105,3 +105,53 @@ export function observeCollectionTickets(
     .query(Q.where("route_id", routeId))
     .observe();
 }
+
+// ── Single Ticket Query ────────────────────────────────────────────
+
+/**
+ * Observes a single CollectionTicket by its WatermelonDB ID.
+ * Used by CollectionTicketScreen to show the receipt.
+ * Returns Observable<CollectionTicket>.
+ */
+export function observeTicketById(
+  database: Database,
+  ticketId: string,
+): Observable<CollectionTicket> {
+  return database
+    .get<CollectionTicket>("collection_tickets")
+    .findAndObserve(ticketId);
+}
+
+// ── Route Stop Single Query ───────────────────────────────────────
+
+/**
+ * Observes a single RouteStop by its WatermelonDB ID.
+ * Used by screens that need to react to stop status changes.
+ * Returns Observable<RouteStop>.
+ */
+export function observeRouteStopById(
+  database: Database,
+  stopId: string,
+): Observable<RouteStop> {
+  return database
+    .get<RouteStop>("route_stops")
+    .findAndObserve(stopId);
+}
+
+// ── Unsynced Tickets Query ────────────────────────────────────────
+
+/**
+ * Observes all tickets that have not yet been pushed to the server.
+ * Used by TripSheetSummary to show the pending sync count badge.
+ * Returns Observable<CollectionTicket[]>.
+ */
+export function observeUnsyncedTickets(
+  database: Database,
+): Observable<CollectionTicket[]> {
+  return database
+    .get<CollectionTicket>("collection_tickets")
+    .query(
+      Q.where("sync_status", Q.oneOf(["created", "updated"])),
+    )
+    .observe();
+}

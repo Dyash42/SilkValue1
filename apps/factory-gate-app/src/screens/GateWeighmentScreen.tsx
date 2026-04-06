@@ -9,7 +9,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
 } from "react-native";
 import { MOCK_WEIGHMENT } from "../mock/gateMockData";
 
@@ -18,20 +17,7 @@ export const GateWeighmentScreen: React.FC<any> = ({ navigation }) => {
   const [comment, setComment] = useState("");
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Top App Bar */}
-      <View style={styles.topBar}>
-        <View style={styles.topBarLeft}>
-          <TouchableOpacity onPress={() => navigation?.goBack?.()} activeOpacity={0.7}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.topBarTitle}>GATE WEIGHMENT</Text>
-        </View>
-        <View style={styles.liveBadge}>
-          <Text style={styles.liveBadgeText}>LIVE SCALE</Text>
-        </View>
-      </View>
-
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Step Progress */}
         <View style={styles.stepProgress}>
@@ -167,7 +153,7 @@ export const GateWeighmentScreen: React.FC<any> = ({ navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Bottom Actions */}
+      {/* Bottom Actions — pinned via Flexbox, no absolute positioning */}
       <View style={styles.bottomActions}>
         <TouchableOpacity style={styles.reweighButton} activeOpacity={0.8}>
           <Text style={styles.reweighText}>RE-WEIGH</Text>
@@ -181,24 +167,13 @@ export const GateWeighmentScreen: React.FC<any> = ({ navigation }) => {
           <Text style={styles.confirmCheckIcon}>✓</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F9F9F9" },
-  topBar: {
-    height: 56, backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1, borderBottomColor: "#DDDDDD",
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  topBarLeft: { flexDirection: "row", alignItems: "center", gap: 16 },
-  backIcon: { fontSize: 24, color: "#000000" },
-  topBarTitle: { fontSize: 16, fontWeight: "700", color: "#000000", letterSpacing: 0.5, textTransform: "uppercase" },
-  liveBadge: { backgroundColor: "#000000", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 2 },
-  liveBadgeText: { fontSize: 10, fontWeight: "700", color: "#FFFFFF", letterSpacing: 1, textTransform: "uppercase" },
-  content: { padding: 16, paddingBottom: 160, gap: 24 },
+  container: { flex: 1, backgroundColor: "#F9F9F9" },
+  content: { padding: 16, paddingBottom: 16, gap: 24 },
 
   // Step Progress
   stepProgress: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingHorizontal: 8 },
@@ -266,8 +241,8 @@ const styles = StyleSheet.create({
   commentLabel: { fontSize: 10, fontWeight: "700", color: "#000000", letterSpacing: 1, textTransform: "uppercase" },
   commentInput: { borderWidth: 1, borderColor: "#000000", borderRadius: 4, backgroundColor: "#FFFFFF", padding: 12, minHeight: 100, fontSize: 14, color: "#000000" },
 
-  // Bottom Actions
-  bottomActions: { position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "#FFFFFF", borderTopWidth: 1, borderTopColor: "#DDDDDD", padding: 16, flexDirection: "row", gap: 16 },
+  // Bottom Actions — Flexbox pinned, no absolute
+  bottomActions: { backgroundColor: "#FFFFFF", borderTopWidth: 1, borderTopColor: "#DDDDDD", padding: 16, flexDirection: "row", gap: 16 },
   reweighButton: { flex: 1, height: 52, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#000000", justifyContent: "center", alignItems: "center" },
   reweighText: { fontSize: 11, fontWeight: "700", color: "#000000", letterSpacing: 1, textTransform: "uppercase" },
   confirmWeighmentButton: { flex: 2, height: 52, backgroundColor: "#000000", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 },

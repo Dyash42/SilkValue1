@@ -10,6 +10,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
+  Alert,
   StyleSheet,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -67,7 +68,8 @@ export const RouteMapScreen: React.FC<Props> = ({ navigation }): React.JSX.Eleme
   };
 
   const handleViewTicket = (): void => {
-    navigation.navigate("CollectionTicket", { ticketData: "mock" });
+    // TODO: Phase 2 — look up the ticket ID from WMDB for this stop
+    Alert.alert("View Ticket", "Ticket viewing from the route map will be wired in Phase 2.");
   };
 
   const handleSkipPress = (stopId: string): void => {

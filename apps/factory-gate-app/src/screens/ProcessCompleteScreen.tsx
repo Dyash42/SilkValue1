@@ -9,7 +9,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
 } from "react-native";
 
 export const ProcessCompleteScreen: React.FC<any> = ({ navigation, route }) => {
@@ -19,7 +18,7 @@ export const ProcessCompleteScreen: React.FC<any> = ({ navigation, route }) => {
   const isAccepted = decision.toLowerCase().includes("accept");
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <View style={styles.container}>
         {/* Success Icon */}
         <View style={[styles.iconCircle, !isAccepted && styles.iconCircleError]}>
@@ -92,7 +91,7 @@ export const ProcessCompleteScreen: React.FC<any> = ({ navigation, route }) => {
           RECEIPT WILL BE GENERATED AUTOMATICALLY AND SHARED WITH THE COLLECTOR.
         </Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

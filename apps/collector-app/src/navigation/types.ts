@@ -16,7 +16,7 @@ export type AppStackParamList = {
   ArrivedAtStop: { stopId: string; reelerName: string; villageName: string; expectedWeightKg: number };
   QRScan: { stopId: string };
   CollectionEntry: { stopId: string; reelerId: string; reelerName: string; villageName: string };
-  CollectionTicket: { ticketData: "mock" };
+  CollectionTicket: { ticketId: string };
   TripSheetSummary: undefined;
   BluetoothSetup: undefined;
 };

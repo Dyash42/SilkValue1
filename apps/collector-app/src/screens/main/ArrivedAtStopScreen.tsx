@@ -22,6 +22,9 @@ import {
 import type { TabName } from "@silk-value/ui";
 import type { AppStackParamList } from "../../navigation/types";
 import { MOCK_SCANNED_REELER } from "../../mock/collectorMockData";
+import database from "../../data/database";
+import RouteStop from "../../data/models/RouteStop";
+import { StopStatus, SyncStatus } from "@silk-value/shared-types";
 
 type Props = NativeStackScreenProps<AppStackParamList, "ArrivedAtStop">;
 
@@ -32,7 +35,24 @@ export const ArrivedAtStopScreen: React.FC<Props> = ({
   const insets = useSafeAreaInsets();
   const { stopId, reelerName, villageName, expectedWeightKg } = route.params;
 
-  const handleStartCollection = (): void => {
+  const handleStartCollection = async (): Promise<void> => {
+    try {
+      // Write arrived_at timestamp and status to WatermelonDB
+      const routeStopCollection = database.get<RouteStop>("route_stops");
+      const stop = await routeStopCollection.find(stopId);
+      await database.write(async () => {
+        await stop.update((record) => {
+          record.status = StopStatus.ARRIVED;
+          record.arrivedAt = new Date();
+          record.serverSyncStatus = SyncStatus.UPDATED;
+        });
+      });
+    } catch (error) {
+      // Stop not found in local DB — this can happen if sync hasn't
+      // run yet. Log and proceed anyway so the collector isn't blocked.
+      console.warn("ArrivedAtStop: Could not update stop status:", error);
+    }
+    // Navigate regardless of write result — never block the collector
     navigation.navigate("QRScan", { stopId });
   };
 

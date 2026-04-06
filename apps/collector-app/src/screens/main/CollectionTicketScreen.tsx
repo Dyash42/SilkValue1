@@ -1,15 +1,16 @@
 // SCREEN: Collection Ticket — Digital Receipt
 // REFERENCE: Reference_images/Collector App/06_ticket_updated/screen.png
-// STATUS: UI Complete — Mock Data Only
+// STATUS: Wired to WatermelonDB — reads real ticket + reeler data
 // TODO: Wire Share via WhatsApp (Linking), SMS, Print integrations
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
   StyleSheet,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -22,22 +23,32 @@ import {
 } from "@silk-value/ui";
 import type { TabName } from "@silk-value/ui";
 import type { AppStackParamList } from "../../navigation/types";
-import { MOCK_COLLECTION_TICKET } from "../../mock/collectorMockData";
+import database from "../../data/database";
+import type CollectionTicketModel from "../../data/models/CollectionTicket";
+import type ReelerModel from "../../data/models/Reeler";
 
 type Props = NativeStackScreenProps<AppStackParamList, "CollectionTicket">;
 
-export const CollectionTicketScreen: React.FC<Props> = ({
+// ── Inner view — receives loaded ticket + reeler ────────────────
+interface TicketViewProps {
+  navigation: Props["navigation"];
+  ticket: CollectionTicketModel;
+  reeler: ReelerModel;
+}
+
+const TicketView: React.FC<TicketViewProps> = ({
   navigation,
+  ticket,
+  reeler,
 }): React.JSX.Element => {
   const insets = useSafeAreaInsets();
-  const ticket = MOCK_COLLECTION_TICKET;
 
-  const formattedDate = new Date(ticket.collectedAt).toLocaleDateString("en-IN", {
+  const formattedDate = ticket.createdAt.toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
-  const formattedTime = new Date(ticket.collectedAt).toLocaleTimeString("en-IN", {
+  const formattedTime = ticket.createdAt.toLocaleTimeString("en-IN", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
@@ -102,10 +113,10 @@ export const CollectionTicketScreen: React.FC<Props> = ({
                 <Text style={styles.detailLabel}>REELER</Text>
                 <View style={styles.detailRight}>
                   <Text style={styles.detailValue}>
-                    {ticket.reelerName}
+                    {reeler.fullName}
                   </Text>
                   <Text style={styles.detailSub}>
-                    ID: {ticket.reelerId}
+                    ID: {reeler.id}
                   </Text>
                 </View>
               </View>
@@ -203,6 +214,62 @@ export const CollectionTicketScreen: React.FC<Props> = ({
         bottomInset={insets.bottom}
       />
     </View>
+  );
+};
+
+// ── Root component — loads ticket + reeler then shows view ───────
+export const CollectionTicketScreen: React.FC<Props> = ({
+  navigation,
+  route,
+}): React.JSX.Element => {
+  const insets = useSafeAreaInsets();
+  const { ticketId } = route.params;
+
+  const [ticket, setTicket] = useState<CollectionTicketModel | null>(null);
+  const [reeler, setReeler] = useState<ReelerModel | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadData() {
+      try {
+        const ticketRecord = await database
+          .get<CollectionTicketModel>("collection_tickets")
+          .find(ticketId);
+        const reelerRecord = await database
+          .get<ReelerModel>("reelers")
+          .find(ticketRecord.reelerId);
+
+        if (!cancelled) {
+          setTicket(ticketRecord);
+          setReeler(reelerRecord);
+        }
+      } catch (err) {
+        console.error("CollectionTicketScreen: Load failed:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    loadData();
+    return () => { cancelled = true; };
+  }, [ticketId]);
+
+  if (loading || !ticket || !reeler) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top, justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      </View>
+    );
+  }
+
+  return (
+    <TicketView
+      navigation={navigation}
+      ticket={ticket}
+      reeler={reeler}
+    />
   );
 };
 

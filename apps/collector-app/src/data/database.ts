@@ -5,6 +5,7 @@
 import { Database } from "@nozbe/watermelondb";
 import SQLiteAdapter from "@nozbe/watermelondb/adapters/sqlite";
 import { setGenerator } from "@nozbe/watermelondb/utils/common/randomId";
+import * as Crypto from 'expo-crypto';
 
 import schema from "./schema";
 import {
@@ -17,22 +18,15 @@ import {
 
 // ── Utilities ────────────────────────────────────────────────────────────────
 
-// UUIDv4 generator for Postgres compatibility. Fixes BUG-05.
-function uuidv4() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-setGenerator(() => uuidv4());
+// UUIDv4 generator using expo-crypto for Postgres compatibility. Fixes BUG-05.
+setGenerator(() => Crypto.randomUUID());
 
 // ── Adapter ──────────────────────────────────────────────────────────────────
 const adapter = new SQLiteAdapter({
   schema,
-  // Use JSI (JavaScript Interface) for faster native SQLite communication
-  // when running on Hermes engine
-  jsi: true,
+  // Fallback to async bridge (jsi: false) because the native C++ JSI bindings
+  // are missing (often happens in Expo Go or incomplete custom dev builds).
+  jsi: false,
   onSetUpError: (error) => {
     // In production, report to Sentry/crash analytics
     console.error("WatermelonDB setup error:", error);

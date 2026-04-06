@@ -24,6 +24,9 @@ import {
 import type { TabName } from "@silk-value/ui";
 import type { AppStackParamList } from "../../navigation/types";
 import { MOCK_SCANNED_REELER } from "../../mock/collectorMockData";
+import database from "../../data/database";
+import Reeler from "../../data/models/Reeler";
+import { Q } from "@nozbe/watermelondb";
 
 type Props = NativeStackScreenProps<AppStackParamList, "QRScan">;
 
@@ -36,23 +39,54 @@ export const QRScanScreen: React.FC<Props> = ({
   const [isScanning, setIsScanning] = useState<boolean>(false);
   const [scanResult, setScanResult] = useState<typeof MOCK_SCANNED_REELER | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [scannedReeler, setScannedReeler] = useState<Reeler | null>(null);
 
   const handleSimulateScan = (): void => {
     setIsScanning(true);
-    // Simulate 1.5s scan delay
-    setTimeout(() => {
-      setIsScanning(false);
-      setScanResult(MOCK_SCANNED_REELER);
+    // Simulate scan delay (replace with real camera scan later)
+    // For now, look up the first reeler in local DB for testing.
+    // In production this will be replaced with the decoded QR hash.
+    setTimeout(async () => {
+      try {
+        const reelers = await database
+          .get<Reeler>("reelers")
+          .query()
+          .fetch();
+
+        if (reelers.length > 0) {
+          const foundReeler = reelers[0];
+          setScannedReeler(foundReeler);
+          // Keep setScanResult for the UI display (it shows the card)
+          setScanResult({
+            id: foundReeler.id,
+            fullName: foundReeler.fullName,
+            village: foundReeler.village,
+            phone: foundReeler.phone,
+            qrCodeHash: foundReeler.qrCodeHash,
+          } as any);
+        } else {
+          // Fallback: no reelers synced yet — show a clear message
+          Alert.alert(
+            "No Reelers Found",
+            "No reeler data is available offline. Please sync first by returning to the home screen.",
+          );
+        }
+      } catch (error) {
+        console.error("QRScan: Reeler lookup failed:", error);
+        Alert.alert("Scan Error", "Could not read reeler data. Please try again.");
+      } finally {
+        setIsScanning(false);
+      }
     }, 1500);
   };
 
   const handleProceed = (): void => {
-    if (!scanResult) return;
+    if (!scannedReeler) return;
     navigation.navigate("CollectionEntry", {
       stopId,
-      reelerId: scanResult.id,
-      reelerName: scanResult.fullName,
-      villageName: scanResult.village,
+      reelerId: scannedReeler.id,
+      reelerName: scannedReeler.fullName,
+      villageName: scannedReeler.village,
     });
   };
 

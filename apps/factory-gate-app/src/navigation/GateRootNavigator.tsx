@@ -7,7 +7,7 @@ import { GateAppNavigator } from "./GateAppNavigator";
 export const GateRootNavigator: React.FC = () => {
   // MOCK: Toggle between auth and app.
   // Set to true to jump straight to main app for dashboard review.
-  const [isAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated] = useState<boolean>(true);
 
   if (isAuthenticated) {
     return <GateAppNavigator />;
