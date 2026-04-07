@@ -360,7 +360,7 @@ export const CollectionEntryScreen: React.FC<Props> = ({
 
       {/* ── Bottom Nav ───────────────────────────────────────────────── */}
       <BottomNavBar
-        activeTab={null as unknown as TabName}
+        activeTab={null}
         onTabPress={handleTabPress}
         bottomInset={0}
       />

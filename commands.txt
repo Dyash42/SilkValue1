@@ -1,0 +1,2 @@
+pnpm --filter @silk-value/factory-gate-app exec expo start -c
+pnpm --filter @silk-value/silk-value-app exec expo start -c

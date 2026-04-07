@@ -12,7 +12,7 @@ import { theme } from "../theme";
 export type TabName = "Home" | "Map" | "Collections" | "Settings";
 
 export interface BottomNavBarProps {
-  activeTab: TabName;
+  activeTab: TabName | null;
   onTabPress: (tab: TabName) => void;
   /** Bottom safe-area inset from useSafeAreaInsets().bottom */
   bottomInset?: number;

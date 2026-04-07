@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "Silk Value",
+    "slug": "silk-value",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "silkvalue",
+    "splash": {
+      "backgroundColor": "#ffffff"
+    },
+    "platforms": ["android"],
+    "jsEngine": "hermes",
+    "android": {
+      "package": "com.silkvalue.app"
+    }
+  }
+}
