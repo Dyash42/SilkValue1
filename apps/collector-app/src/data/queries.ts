@@ -39,6 +39,11 @@ export function observeCollectorProfile(
  * Observes today's route for the given collector.
  * Returns Observable<Route[]> — callers should take [0].
  *
+ * IMPORTANT: `profileId` must be `profiles.id` (the row PK), NOT the
+ * Supabase auth UUID. The `routes.collector_id` column references
+ * `profiles.id`, not `auth.users.id`. Passing the auth UUID will always
+ * return zero results.
+ *
  * QUERY DECISION: Filters by collector_id and today's date (YYYY-MM-DD).
  * The date column in WatermelonDB stores ISO date strings, matching the
  * Supabase `date` column format used in the sync service.

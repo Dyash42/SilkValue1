@@ -9,14 +9,19 @@ export interface GradeBreakdownRowProps {
   totalKg: number;
   totalAmount: number;
   isHeader?: boolean;
+  /** Override label text for the count column — only used when isHeader=true */
+  countLabel?: string;
+  /** Override label text for the weight column — only used when isHeader=true */
+  weightLabel?: string;
 }
 
 export const GradeBreakdownRow: React.FC<GradeBreakdownRowProps> = ({
   grade,
   count,
   totalKg,
-  totalAmount,
   isHeader = false,
+  countLabel,
+  weightLabel,
 }): React.JSX.Element => {
   const textStyle = isHeader ? styles.headerText : styles.cellText;
   const amountStyle = isHeader ? styles.headerText : styles.amountText;
@@ -28,12 +33,12 @@ export const GradeBreakdownRow: React.FC<GradeBreakdownRowProps> = ({
       </View>
       <View style={[styles.cell, styles.weightCell]}>
         <Text style={[textStyle, styles.rightAlign]}>
-          {isHeader ? totalKg : `${totalKg.toFixed(1)} kg`}
+          {isHeader ? (weightLabel ?? "Weight") : `${totalKg.toFixed(1)} kg`}
         </Text>
       </View>
       <View style={[styles.cell, styles.countCell]}>
         <Text style={[amountStyle, styles.rightAlign]}>
-          {isHeader ? `${count}` : count}
+          {isHeader ? (countLabel ?? "Count") : count}
         </Text>
       </View>
     </View>

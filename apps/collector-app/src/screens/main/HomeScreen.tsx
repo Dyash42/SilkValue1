@@ -43,6 +43,7 @@ import type { SyncStatusIndicatorProps } from "@silk-value/ui";
 import { StopStatus } from "@silk-value/shared-types";
 import type { SyncServiceStatus } from "../../services/sync";
 
+import { Q } from "@nozbe/watermelondb";
 import database from "../../data/database";
 import type Profile from "../../data/models/Profile";
 import type Route from "../../data/models/Route";
@@ -239,6 +240,8 @@ const EnhancedRouteSection = withObservables(
 
 interface HomeContentInputProps {
   userId: string;
+  // profiles.id (NOT the Supabase auth UUID) — routes.collector_id references this
+  profileId: string;
   syncIndicatorStatus: SyncStatusIndicatorProps["status"];
 }
 
@@ -388,10 +391,11 @@ const HomeContentView: React.FC<HomeContentProps> = ({
 };
 
 const EnhancedHomeContent = withObservables(
-  ["userId"],
-  ({ userId }: HomeContentInputProps) => ({
+  ["userId", "profileId"],
+  ({ userId, profileId }: HomeContentInputProps) => ({
     profiles: observeCollectorProfile(database, userId),
-    routes: observeTodayRoute(database, userId),
+    // routes.collector_id stores profiles.id — must use profileId, not the auth UUID
+    routes: observeTodayRoute(database, profileId),
   }),
 )(HomeContentView);
 
@@ -401,19 +405,28 @@ const EnhancedHomeContent = withObservables(
 
 export const HomeScreen: React.FC = (): React.JSX.Element => {
   const [userId, setUserId] = useState<string | null>(null);
+  const [profileId, setProfileId] = useState<string | null>(null);
   const { syncStatus } = useSync();
 
-  // Read the authenticated user ID once on mount.
-  // Auth state changes (logout) are handled by RootNavigator which
-  // unmounts the entire AppNavigator, so we don't need to listen here.
+  // Read auth user ID, then resolve profiles.id from WatermelonDB.
+  // routes.collector_id stores profiles.id (not the auth UUID), so both
+  // are needed: userId for observeCollectorProfile, profileId for observeTodayRoute.
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setUserId(data.session?.user?.id ?? null);
+    supabase.auth.getSession().then(async ({ data }) => {
+      const authUserId = data.session?.user?.id ?? null;
+      setUserId(authUserId);
+      if (authUserId) {
+        const profiles = await database
+          .get<Profile>("profiles")
+          .query(Q.where("user_id", authUserId))
+          .fetch();
+        setProfileId(profiles[0]?.id ?? null);
+      }
     });
   }, []);
 
-  // ── Loading state while reading session ──────────────────────────────
-  if (!userId) {
+  // ── Loading state while reading session + profile ─────────────────────
+  if (!userId || !profileId) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -424,6 +437,7 @@ export const HomeScreen: React.FC = (): React.JSX.Element => {
   return (
     <EnhancedHomeContent
       userId={userId}
+      profileId={profileId}
       syncIndicatorStatus={mapSyncStatus(syncStatus)}
     />
   );

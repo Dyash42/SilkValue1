@@ -1,25 +1,59 @@
 // ─── Screen 5: QC Inspection — Quality parameters + decision buttons ─────────
-// TODO: Replace with real QC data entry via WatermelonDB.
 
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import { MOCK_QC_PARAMETERS } from "../mock/gateMockData";
+import { useQCParameters, useWeighmentData } from "../hooks/useGateData";
+import { supabase } from "../config/supabase";
+import * as gateService from "../services/gateService";
 
-export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
-  const qcParams = MOCK_QC_PARAMETERS;
+type QCDecision = "accept" | "deduct" | "reject";
+
+export const QCInspectionScreen: React.FC<any> = ({ navigation, route }) => {
+  const gateEntryId: string = route?.params?.gateEntryId ?? "";
+  const { data: qcParams, loading: paramsLoading } = useQCParameters(gateEntryId);
+  const { data: weighment, loading: weighmentLoading } = useWeighmentData(gateEntryId);
+  const [decision, setDecision] = useState<QCDecision | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const loading = paramsLoading || weighmentLoading;
+
+  const handleConfirm = async () => {
+    if (!decision) {
+      Alert.alert("Select Decision", "Please select a QC decision before confirming.");
+      return;
+    }
+    setSaving(true);
+    try {
+      await gateService.saveQCDecision(supabase, gateEntryId, decision, 0);
+      navigation?.navigate?.("AcceptanceBreakdown", { gateEntryId, qcDecision: decision });
+    } catch (err: any) {
+      Alert.alert("Save Failed", err?.message ?? "An error occurred");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color="#000000" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Step Progress */}
         <View style={styles.stepRow}>
-          {/* Step 1: Done */}
           <View style={styles.stepCol}>
             <View style={styles.circleDone}>
               <Text style={styles.circleCheck}>✓</Text>
@@ -27,7 +61,6 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
             <Text style={styles.stepLabelSmall}>ARRIVAL</Text>
           </View>
           <View style={styles.lineH} />
-          {/* Step 2: Done */}
           <View style={styles.stepCol}>
             <View style={styles.circleDone}>
               <Text style={styles.circleCheck}>✓</Text>
@@ -35,7 +68,6 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
             <Text style={styles.stepLabelSmall}>WEIGHING</Text>
           </View>
           <View style={styles.lineH} />
-          {/* Step 3: Active */}
           <View style={styles.stepCol}>
             <View style={styles.circleActive}>
               <Text style={styles.circleNum}>3</Text>
@@ -51,13 +83,13 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
           </View>
           <View style={styles.contextInfo}>
             <Text style={styles.contextLabel}>ACTIVE CONSIGNMENT</Text>
-            <Text style={styles.contextTitle}>TRK-9920 / V-X4</Text>
+            <Text style={styles.contextTitle}>{weighment?.vehiclePlate ?? "—"}</Text>
             <View style={styles.contextMeta}>
               <Text style={styles.contextMetaText}>
-                Material: <Text style={styles.contextMetaValue}>Raw Ore A2</Text>
+                Driver: <Text style={styles.contextMetaValue}>{weighment?.driverName ?? "—"}</Text>
               </Text>
               <Text style={styles.contextMetaText}>
-                Weight: <Text style={styles.contextMetaValue}>42.5 MT</Text>
+                Weight: <Text style={styles.contextMetaValue}>{((weighment?.netWeight ?? 0) / 1000).toFixed(1)} MT</Text>
               </Text>
             </View>
           </View>
@@ -67,7 +99,7 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
         <View style={styles.paramSection}>
           <Text style={styles.paramSectionTitle}>Quality Parameters</Text>
           <View style={styles.paramGrid}>
-            {qcParams.map((param) => (
+            {(qcParams ?? []).map((param) => (
               <View key={param.id} style={styles.paramRow}>
                 <View>
                   <Text style={styles.paramName}>{param.name}</Text>
@@ -90,14 +122,13 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
 
         {/* Final Accepted Weight Card */}
         <View style={styles.finalWeightBox}>
-          <Text style={styles.finalWeightLabel}>FINAL NET WEIGHT CALCULATION</Text>
+          <Text style={styles.finalWeightLabel}>FINAL NET WEIGHT</Text>
           <View style={styles.finalWeightRow}>
-            <Text style={styles.finalWeightValue}>41,990</Text>
+            <Text style={styles.finalWeightValue}>
+              {(weighment?.netWeight ?? 0).toLocaleString()}
+            </Text>
             <Text style={styles.finalWeightUnit}>KG</Text>
           </View>
-          <Text style={styles.finalWeightDeduction}>
-            Deduction applied: -510 KG (Foreign Mat.)
-          </Text>
         </View>
 
         {/* QC Decision Buttons */}
@@ -105,26 +136,30 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
           <Text style={styles.decisionTitle}>FINAL DECISION</Text>
 
           <TouchableOpacity
-            style={styles.acceptButton}
+            style={[styles.acceptButton, decision === "accept" && styles.acceptButtonSelected]}
             activeOpacity={0.8}
-            onPress={() => navigation?.navigate?.("AcceptanceBreakdown", { vehicleId: "v-001" })}
+            onPress={() => setDecision("accept")}
           >
-            <Text style={styles.acceptIcon}>✓</Text>
-            <Text style={styles.acceptText}>ACCEPT MANIFEST</Text>
+            <Text style={[styles.acceptIcon, decision === "accept" && { color: "#FFFFFF" }]}>✓</Text>
+            <Text style={[styles.acceptText, decision === "accept" && { color: "#FFFFFF" }]}>ACCEPT MANIFEST</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.deductButton}
+            style={[styles.deductButton, decision === "deduct" && styles.deductButtonSelected]}
             activeOpacity={0.8}
-            onPress={() => navigation?.navigate?.("AcceptanceBreakdown", { vehicleId: "v-001" })}
+            onPress={() => setDecision("deduct")}
           >
             <Text style={styles.deductIcon}>⊖</Text>
             <Text style={styles.deductText}>ACCEPT WITH DEDUCTION</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.rejectButton} activeOpacity={0.8}>
-            <Text style={styles.rejectIcon}>⊘</Text>
-            <Text style={styles.rejectText}>REJECT SHIPMENT</Text>
+          <TouchableOpacity
+            style={[styles.rejectButton, decision === "reject" && styles.rejectButtonSelected]}
+            activeOpacity={0.8}
+            onPress={() => setDecision("reject")}
+          >
+            <Text style={[styles.rejectIcon, decision === "reject" && { color: "#FFFFFF" }]}>⊘</Text>
+            <Text style={[styles.rejectText, decision === "reject" && { color: "#FFFFFF" }]}>REJECT SHIPMENT</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -132,11 +167,16 @@ export const QCInspectionScreen: React.FC<any> = ({ navigation }) => {
       {/* Sticky Confirm Button — Flexbox pinned, no absolute */}
       <View style={styles.stickyBottom}>
         <TouchableOpacity
-          style={styles.stickyButton}
+          style={[styles.stickyButton, (!decision || saving) && { opacity: 0.5 }]}
           activeOpacity={0.8}
-          onPress={() => navigation?.navigate?.("AcceptanceBreakdown", { vehicleId: "v-001" })}
+          disabled={!decision || saving}
+          onPress={handleConfirm}
         >
-          <Text style={styles.stickyButtonText}>CONFIRM QC DECISION</Text>
+          {saving ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Text style={styles.stickyButtonText}>CONFIRM QC DECISION</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -188,18 +228,20 @@ const styles = StyleSheet.create({
   finalWeightRow: { flexDirection: "row", alignItems: "center", gap: 4 },
   finalWeightValue: { fontSize: 52, fontWeight: "900", color: "#000000", letterSpacing: -2 },
   finalWeightUnit: { fontSize: 22, fontWeight: "900", color: "#000000", marginTop: 12 },
-  finalWeightDeduction: { fontSize: 10, fontWeight: "700", color: "#474747", marginTop: 8, textTransform: "uppercase" },
 
   // Decision Buttons
   decisionSection: { gap: 12 },
   decisionTitle: { fontSize: 11, fontWeight: "700", color: "#474747", letterSpacing: 1, marginBottom: 4, textTransform: "uppercase" },
   acceptButton: { height: 52, borderWidth: 1, borderColor: "#000000", backgroundColor: "#FFFFFF", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 },
+  acceptButtonSelected: { backgroundColor: "#2E7D32", borderColor: "#2E7D32" },
   acceptIcon: { fontSize: 18, color: "#000000" },
   acceptText: { fontSize: 11, fontWeight: "700", color: "#000000", letterSpacing: 1, textTransform: "uppercase" },
   deductButton: { height: 52, backgroundColor: "#000000", borderWidth: 2, borderColor: "#000000", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 },
+  deductButtonSelected: { backgroundColor: "#474747", borderColor: "#474747" },
   deductIcon: { fontSize: 18, color: "#FFFFFF" },
   deductText: { fontSize: 11, fontWeight: "700", color: "#FFFFFF", letterSpacing: 1, textTransform: "uppercase" },
   rejectButton: { height: 52, borderWidth: 1, borderColor: "#BA1A1A", backgroundColor: "#FFFFFF", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 },
+  rejectButtonSelected: { backgroundColor: "#BA1A1A", borderColor: "#BA1A1A" },
   rejectIcon: { fontSize: 18, color: "#BA1A1A" },
   rejectText: { fontSize: 11, fontWeight: "700", color: "#BA1A1A", letterSpacing: 1, textTransform: "uppercase" },
 

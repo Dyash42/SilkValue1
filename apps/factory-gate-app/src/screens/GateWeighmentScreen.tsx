@@ -9,12 +9,39 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import { MOCK_WEIGHMENT } from "../mock/gateMockData";
+import { useWeighmentData } from "../hooks/useGateData";
+import { supabase } from "../config/supabase";
+import * as gateService from "../services/gateService";
 
-export const GateWeighmentScreen: React.FC<any> = ({ navigation }) => {
-  const w = MOCK_WEIGHMENT;
+export const GateWeighmentScreen: React.FC<any> = ({ navigation, route }) => {
+  const gateEntryId: string = route?.params?.gateEntryId ?? "";
+  const { data: w, loading } = useWeighmentData(gateEntryId);
   const [comment, setComment] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const handleConfirm = async () => {
+    if (!w) return;
+    setSaving(true);
+    try {
+      await gateService.saveWeighment(supabase, gateEntryId, w.grossWeight, w.tareWeight, comment);
+      navigation?.navigate?.("QCInspection", { gateEntryId });
+    } catch (err: any) {
+      Alert.alert("Save Failed", err?.message ?? "An error occurred");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading || !w) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color="#000000" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -59,11 +86,11 @@ export const GateWeighmentScreen: React.FC<any> = ({ navigation }) => {
             <View style={styles.vehicleInfoRow}>
               <View>
                 <Text style={styles.vehicleLabel}>VEHICLE PLATE</Text>
-                <Text style={styles.vehiclePlate}>MH-12-DT-4421</Text>
+                <Text style={styles.vehiclePlate}>{w.vehiclePlate}</Text>
               </View>
               <View style={{ alignItems: "flex-end" as const }}>
                 <Text style={styles.vehicleLabel}>DRIVER</Text>
-                <Text style={styles.vehicleValue}>Rajesh Kumar</Text>
+                <Text style={styles.vehicleValue}>{w.driverName}</Text>
               </View>
             </View>
           </View>
@@ -117,7 +144,7 @@ export const GateWeighmentScreen: React.FC<any> = ({ navigation }) => {
           <View style={styles.comparisonCell}>
             <Text style={styles.comparisonLabel}>VARIANCE</Text>
             <Text style={[styles.comparisonValue, styles.varianceError]}>
-              + {w.varianceKg.toLocaleString()} KG
+              {w.varianceKg >= 0 ? "+ " : "- "}{Math.abs(w.varianceKg).toLocaleString()} KG
             </Text>
           </View>
         </View>
@@ -159,12 +186,19 @@ export const GateWeighmentScreen: React.FC<any> = ({ navigation }) => {
           <Text style={styles.reweighText}>RE-WEIGH</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.confirmWeighmentButton}
+          style={[styles.confirmWeighmentButton, saving && { opacity: 0.5 }]}
           activeOpacity={0.8}
-          onPress={() => navigation?.navigate?.("QCInspection", { vehicleId: "v-001" })}
+          disabled={saving}
+          onPress={handleConfirm}
         >
-          <Text style={styles.confirmWeighmentText}>CONFIRM WEIGHMENT</Text>
-          <Text style={styles.confirmCheckIcon}>✓</Text>
+          {saving ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <>
+              <Text style={styles.confirmWeighmentText}>CONFIRM WEIGHMENT</Text>
+              <Text style={styles.confirmCheckIcon}>✓</Text>
+            </>
+          )}
         </TouchableOpacity>
       </View>
     </View>

@@ -14,10 +14,10 @@ export type GateTabParamList = {
 
 export type GateAppStackParamList = {
   MainTabs: undefined;
-  VehicleCheckIn: { vehicleId?: string };
-  GateWeighment: { vehicleId: string };
-  QCInspection: { vehicleId: string };
-  AcceptanceBreakdown: { vehicleId: string };
-  ProcessComplete: { vehicleId: string; decision: string };
+  VehicleCheckIn: { gateEntryId?: string };
+  GateWeighment: { gateEntryId: string };
+  QCInspection: { gateEntryId: string };
+  AcceptanceBreakdown: { gateEntryId: string; qcDecision: string };
+  ProcessComplete: { gateEntryId: string; decision: string };
   HistoryDetail: { entryId: string };
 };

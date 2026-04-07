@@ -23,6 +23,8 @@ export interface WeighmentData {
   varianceKg: number;
   variancePercent: number;
   exceedsThreshold: boolean;
+  vehiclePlate: string;
+  driverName: string;
 }
 
 export interface QCParameter {

@@ -24,9 +24,9 @@ setGenerator(() => Crypto.randomUUID());
 // ── Adapter ──────────────────────────────────────────────────────────────────
 const adapter = new SQLiteAdapter({
   schema,
-  // Fallback to async bridge (jsi: false) because the native C++ JSI bindings
-  // are missing (often happens in Expo Go or incomplete custom dev builds).
-  jsi: false,
+  // Use JSI bridge — WMDatabaseBridge (async) is not linked in silk-value-app,
+  // only watermelondb-jsi is. JSI is faster anyway.
+  jsi: true,
   onSetUpError: (error) => {
     // In production, report to Sentry/crash analytics
     console.error("WatermelonDB setup error:", error);

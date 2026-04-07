@@ -1,5 +1,4 @@
 // ─── Screen 2: Gate Dashboard — Main hub with stats & expected arrivals ──────
-// TODO: Replace mock data with WatermelonDB observables.
 
 import React from "react";
 import {
@@ -9,12 +8,26 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
-import { MOCK_DAILY_SUMMARY, MOCK_EXPECTED_VEHICLES, MOCK_OPERATOR } from "../mock/gateMockData";
+import { useGateAuth } from "../context/GateAuthContext";
+import { useDailySummary, useExpectedVehicles } from "../hooks/useGateData";
 
 export const GateDashboardScreen: React.FC<any> = ({ navigation }) => {
-  const summary = MOCK_DAILY_SUMMARY;
-  const vehicles = MOCK_EXPECTED_VEHICLES;
+  const { operatorProfile } = useGateAuth();
+  const { data: summary, loading: summaryLoading } = useDailySummary();
+  const { data: vehicleList, loading: vehiclesLoading } = useExpectedVehicles();
+
+  const vehicles = vehicleList ?? [];
+  const lateVehicles = vehicles.filter(v => v.status === "late");
+
+  if (summaryLoading || vehiclesLoading) {
+    return (
+      <SafeAreaView style={[styles.safeArea, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color="#000000" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -26,38 +39,42 @@ export const GateDashboardScreen: React.FC<any> = ({ navigation }) => {
         </View>
         <View style={styles.topBarRight}>
           <Text style={styles.operatorLabel}>
-            OPERATOR: {MOCK_OPERATOR.name}
+            OPERATOR: {operatorProfile?.name ?? "—"}
           </Text>
           <Text style={styles.avatarIcon}>●</Text>
         </View>
       </View>
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-        {/* Late Vehicle Alert Banner */}
-        <TouchableOpacity style={styles.alertBanner} activeOpacity={0.8}>
-          <View style={styles.alertLeft}>
-            <Text style={styles.alertIcon}>⚠</Text>
-            <View>
-              <Text style={styles.alertTitle}>LATE VEHICLE ALERT</Text>
-              <Text style={styles.alertBody}>TX-9042 is 45 mins behind schedule</Text>
+        {/* Late Vehicle Alert Banner — only show if there are late vehicles */}
+        {lateVehicles.length > 0 && (
+          <TouchableOpacity style={styles.alertBanner} activeOpacity={0.8}>
+            <View style={styles.alertLeft}>
+              <Text style={styles.alertIcon}>⚠</Text>
+              <View>
+                <Text style={styles.alertTitle}>LATE VEHICLE ALERT</Text>
+                <Text style={styles.alertBody}>
+                  {lateVehicles[0].licensePlate} is behind schedule
+                </Text>
+              </View>
             </View>
-          </View>
-          <Text style={styles.alertChevron}>›</Text>
-        </TouchableOpacity>
+            <Text style={styles.alertChevron}>›</Text>
+          </TouchableOpacity>
+        )}
 
         {/* Stat Cards Grid */}
         <View style={styles.statGrid}>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>CHECKED IN</Text>
             <View>
-              <Text style={styles.statValue}>{String(summary.checkedInToday).padStart(2, "0")}</Text>
+              <Text style={styles.statValue}>{String(summary?.checkedInToday ?? 0).padStart(2, "0")}</Text>
               <Text style={styles.statSublabel}>VEHICLES TODAY</Text>
             </View>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>PENDING ARRIVAL</Text>
             <View>
-              <Text style={styles.statValue}>{String(summary.pendingArrival).padStart(2, "0")}</Text>
+              <Text style={styles.statValue}>{String(summary?.pendingArrival ?? 0).padStart(2, "0")}</Text>
               <Text style={styles.statSublabel}>ESTIMATED REMAINING</Text>
             </View>
           </View>
@@ -70,14 +87,14 @@ export const GateDashboardScreen: React.FC<any> = ({ navigation }) => {
             <Text style={styles.scaleIcon}>⚖</Text>
           </View>
           <View style={styles.weightValueRow}>
-            <Text style={styles.weightValue}>{summary.totalWeightDispatched.toFixed(1)}</Text>
+            <Text style={styles.weightValue}>{(summary?.totalWeightDispatched ?? 0).toFixed(1)}</Text>
             <Text style={styles.weightUnit}>METRIC TONS</Text>
           </View>
           <View style={styles.progressTrack}>
-            <View style={[styles.progressFill, { width: `${summary.dailyQuotaPercent}%` as any }]} />
+            <View style={[styles.progressFill, { width: `${summary?.dailyQuotaPercent ?? 0}%` as any }]} />
           </View>
           <Text style={styles.progressLabel}>
-            {summary.dailyQuotaPercent}% OF DAILY QUOTA REACHED
+            {summary?.dailyQuotaPercent ?? 0}% OF DAILY QUOTA REACHED
           </Text>
         </View>
 
@@ -85,7 +102,7 @@ export const GateDashboardScreen: React.FC<any> = ({ navigation }) => {
         <TouchableOpacity style={styles.qcCard} activeOpacity={0.7}>
           <View style={styles.qcContent}>
             <Text style={styles.statLabel}>QUALITY CONTROL</Text>
-            <Text style={styles.qcTitle}>{summary.pendingQCReviews} Pending QC Reviews</Text>
+            <Text style={styles.qcTitle}>{summary?.pendingQCReviews ?? 0} Pending QC Reviews</Text>
             <View style={styles.qcLink}>
               <Text style={styles.qcLinkText}>TAP TO REVIEW</Text>
               <Text style={styles.qcLinkArrow}>→</Text>
@@ -101,6 +118,13 @@ export const GateDashboardScreen: React.FC<any> = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Expected Arrivals Today</Text>
           <Text style={styles.sectionSubtitle}>LIVE SCHEDULE MANIFEST</Text>
         </View>
+
+        {/* Empty state */}
+        {vehicles.length === 0 && (
+          <View style={{ padding: 32, alignItems: "center" }}>
+            <Text style={{ fontSize: 14, fontWeight: "700", color: "#474747" }}>NO VEHICLES SCHEDULED TODAY</Text>
+          </View>
+        )}
 
         {/* Expected Arrivals List */}
         {vehicles.map((vehicle) => {
@@ -118,7 +142,7 @@ export const GateDashboardScreen: React.FC<any> = ({ navigation }) => {
               activeOpacity={0.7}
               onPress={() => {
                 if (!isCheckedIn) {
-                  navigation?.navigate?.("VehicleCheckIn", { vehicleId: vehicle.id });
+                  navigation?.navigate?.("VehicleCheckIn", { gateEntryId: vehicle.id });
                 }
               }}
             >

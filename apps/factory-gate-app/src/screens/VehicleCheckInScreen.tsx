@@ -8,11 +8,50 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import { MOCK_EXPECTED_VEHICLES } from "../mock/gateMockData";
+import { useExpectedVehicles } from "../hooks/useGateData";
+import { supabase } from "../config/supabase";
+import * as gateService from "../services/gateService";
 
-export const VehicleCheckInScreen: React.FC<any> = ({ navigation }) => {
-  const vehicles = MOCK_EXPECTED_VEHICLES.filter((v) => v.status !== "checked_in");
+export const VehicleCheckInScreen: React.FC<any> = ({ navigation, route }) => {
+  const preselectedId = route?.params?.gateEntryId ?? null;
+  const { data: vehicleList, loading } = useExpectedVehicles();
+  const vehicles = (vehicleList ?? []).filter((v) => v.status !== "checked_in");
+
+  const [selectedVehicleId, setSelectedVehicleId] = React.useState<string | null>(
+    preselectedId
+  );
+  const [confirming, setConfirming] = React.useState(false);
+
+  // Once vehicles load, default-select the first if nothing preselected
+  React.useEffect(() => {
+    if (!selectedVehicleId && vehicles.length > 0) {
+      setSelectedVehicleId(vehicles[0].id);
+    }
+  }, [vehicles.length]);
+
+  const handleConfirm = async () => {
+    if (!selectedVehicleId) return;
+    setConfirming(true);
+    try {
+      await gateService.checkInVehicle(supabase, selectedVehicleId);
+      navigation?.navigate?.("GateWeighment", { gateEntryId: selectedVehicleId });
+    } catch (err: any) {
+      Alert.alert("Check-In Failed", err?.message ?? "An error occurred");
+    } finally {
+      setConfirming(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color="#000000" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -75,13 +114,24 @@ export const VehicleCheckInScreen: React.FC<any> = ({ navigation }) => {
           </View>
         </View>
 
+        {vehicles.length === 0 && (
+          <View style={{ padding: 32, alignItems: "center" }}>
+            <Text style={{ fontSize: 14, fontWeight: "700", color: "#474747" }}>
+              NO PENDING VEHICLES
+            </Text>
+          </View>
+        )}
+
         {/* Vehicle Cards */}
         {vehicles.map((vehicle) => (
           <TouchableOpacity
             key={vehicle.id}
-            style={styles.manifestCard}
+            style={[
+              styles.manifestCard,
+              selectedVehicleId === vehicle.id && styles.manifestCardSelected,
+            ]}
             activeOpacity={0.7}
-            onPress={() => navigation?.navigate?.("GateWeighment", { vehicleId: vehicle.id })}
+            onPress={() => setSelectedVehicleId(vehicle.id)}
           >
             <View style={styles.manifestTop}>
               <View>
@@ -121,12 +171,19 @@ export const VehicleCheckInScreen: React.FC<any> = ({ navigation }) => {
       {/* Bottom Action — pinned via Flexbox, no absolute positioning */}
       <View style={styles.bottomAction}>
         <TouchableOpacity
-          style={styles.confirmButton}
+          style={[styles.confirmButton, (!selectedVehicleId || confirming) && { opacity: 0.5 }]}
           activeOpacity={0.8}
-          onPress={() => navigation?.navigate?.("GateWeighment", { vehicleId: vehicles[0]?.id })}
+          disabled={!selectedVehicleId || confirming}
+          onPress={handleConfirm}
         >
-          <Text style={styles.confirmIcon}>☑</Text>
-          <Text style={styles.confirmText}>CONFIRM & CHECK IN</Text>
+          {confirming ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <>
+              <Text style={styles.confirmIcon}>☑</Text>
+              <Text style={styles.confirmText}>CONFIRM & CHECK IN</Text>
+            </>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -189,6 +246,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16, marginBottom: 16,
     borderWidth: 1, borderColor: "#000000",
     borderRadius: 4, padding: 16, backgroundColor: "#FFFFFF",
+  },
+  manifestCardSelected: {
+    borderWidth: 2, borderColor: "#000000", backgroundColor: "#F5F5F5",
   },
   manifestTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 },
   manifestId: { fontSize: 10, fontWeight: "700", color: "#474747", letterSpacing: 0.5, textTransform: "uppercase" },

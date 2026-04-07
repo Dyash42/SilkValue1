@@ -167,7 +167,7 @@ export const TripSheetSummaryScreen: React.FC<Props> = ({
   // ── Ticket list items ─────────────────────────────────────────
   const ticketListItems = collectionTickets.map((t) => ({
     ticketNumber: t.ticketNumber,
-    reelerName: t.reelerId,   // temporary: reeler name lookup in Phase 2
+    reelerName: `RLR-${t.reelerId.slice(-6).toUpperCase()}`,   // TODO Phase 2: resolve full reeler name
     village: "",
     netWeightKg: t.netWeightKg,
     grade: t.grade,
@@ -277,10 +277,12 @@ export const TripSheetSummaryScreen: React.FC<Props> = ({
           <View style={styles.tableContainer}>
             <GradeBreakdownRow
               grade="Grade"
-              count={"Tickets" as unknown as number}
-              totalKg={"Weight" as unknown as number}
+              count={0}
+              totalKg={0}
               totalAmount={0}
               isHeader
+              countLabel="Tickets"
+              weightLabel="Weight"
             />
             {gradeBreakdown.map((row, index) => (
               <GradeBreakdownRow
